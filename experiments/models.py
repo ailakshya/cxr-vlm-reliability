@@ -82,31 +82,9 @@ class QwenVL:
         return self._gen(img, self.REPORT, k=k, temp=temp)[0]
 
     def locate(self, img, finding, k=3, temp=0.7):
-        return self.locate_many(img, [finding], k, temp)[finding]
-
-    @torch.no_grad()
-    def locate_many(self, img, findings, k=3, temp=0.7):
-        """Box requests for every finding of one image in two left-padded batches (greedy, then k samples each)."""
-        if not findings:
-            return {}
-        texts = [self.proc.apply_chat_template(
-            [{"role": "user", "content": [{"type": "image", "image": img},
-                                          {"type": "text", "text": self.LOCATE.format(f=f)}]}],
-            tokenize=False, add_generation_prompt=True) for f in findings]
-        self.tok.padding_side = "left"
-        x = self.proc(text=texts, images=[img] * len(findings), padding=True, return_tensors="pt").to(self.model.device)
-        t, gh, gw = x["image_grid_thw"][0].tolist(); size = (gw * 14, gh * 14)
-        n = x["input_ids"].shape[1]
-        dec = lambda seqs: [self.tok.decode(s[n:], skip_special_tokens=True).strip() for s in seqs]
-        kw = dict(GEN, max_new_tokens=160, pad_token_id=self.tok.pad_token_id)
-        g = dec(self.model.generate(**x, **kw, do_sample=False, temperature=None, top_p=None, top_k=None))
-        s = dec(self.model.generate(**x, **kw, do_sample=True, temperature=temp, top_p=0.95,
-                                    num_return_sequences=k)) if k else []
-        out = {}
-        for i, f in enumerate(findings):
-            raw = [g[i]] + s[i * k:(i + 1) * k]          # generate() returns the k samples of each prompt together
-            out[f] = ([_boxes_from_numbers(r, size) for r in raw], raw)
-        return out
+        g, _, _, size = self._gen(img, self.LOCATE.format(f=finding), max_new_tokens=160)
+        s = self._gen(img, self.LOCATE.format(f=finding), k=k, temp=temp, max_new_tokens=160)[0] if k else []
+        return [_boxes_from_numbers(t, size) for t in g + s], g + s
 
     @torch.no_grad()
     def p_yes(self, img, question):
@@ -193,9 +171,6 @@ class CheXagent2:
         g = self._gen(img, self.LOCATE.format(f=finding), max_new_tokens=160)[0]
         s = self._gen(img, self.LOCATE.format(f=finding), k=k, temp=temp, max_new_tokens=160)[0] if k else []
         return [self._boxes(t) for t in g + s], g + s
-
-    def locate_many(self, img, findings, k=3, temp=0.7):
-        return {f: self.locate(img, f, k, temp) for f in findings}   # remote code: no batched image input
 
     @torch.no_grad()
     def p_yes(self, img, question):

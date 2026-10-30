@@ -79,10 +79,9 @@ def main():
             loc, loc_raw = {}, {}
             if r.get("has_boxes") and a.kloc >= 0:          # --kloc -1 skips localisation
                 targets = {f for f in claims if f not in UNVERIFIABLE} | {f for f in evidence if f in FINDINGS}
-                fs = sorted(targets)
-                res = m.locate_many(img, [PROMPT_NAME[f] for f in fs], k=a.kloc, temp=a.temp)
-                for f in fs:
-                    loc[f], loc_raw[f] = res[PROMPT_NAME[f]]
+                # one finding at a time: batching was ~1% faster and changed the 4-bit greedy boxes (padding)
+                for f in sorted(targets):
+                    loc[f], loc_raw[f] = m.locate(img, PROMPT_NAME[f], k=a.kloc, temp=a.temp)
 
             fo.write(json.dumps(dict(
                 id=r["id"], site=a.site, cond=a.cond, model=a.model, labels=r.get("labels", {}),
