@@ -1,0 +1,164 @@
+qwen25vl7b chestxdet clean: 553 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:20<01:20, 20.20s/it]Loading checkpoint shards:  20%|██        | 1/5 [00:31<02:05, 31.49s/it]
+Traceback (most recent call last):
+  File "/home/lakshya/cxr_vlm/generate.py", line 81, in <module>
+    main()
+  File "/home/lakshya/cxr_vlm/generate.py", line 44, in main
+    m, lab = MODELS[a.model](), Labeler("cpu")
+             ^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 164, in <lambda>
+    "qwen25vl7b": lambda: QwenVL("Qwen/Qwen2.5-VL-7B-Instruct"),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 49, in __init__
+    self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 277, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5048, in from_pretrained
+    ) = cls._load_pretrained_model(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5468, in _load_pretrained_model
+    _error_msgs, disk_offload_index = load_shard_file(args)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 843, in load_shard_file
+    disk_offload_index = _load_state_dict_into_meta_model(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 774, in _load_state_dict_into_meta_model
+    hf_quantizer.create_quantized_param(model, param, param_name, param_device)
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 233, in create_quantized_param
+    new_value = bnb.nn.Params4bit(new_value, requires_grad=False, **kwargs).to(target_device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 428, in to
+    return self._quantize(device)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 382, in _quantize
+    w = self.data.contiguous().to(device)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 130.00 MiB. GPU 0 has a total capacity of 15.47 GiB of which 75.00 MiB is free. Process 1055237 has 314.39 MiB memory in use. Process 4163688 has 354.52 MiB memory in use. Process 255564 has 11.66 GiB memory in use. Including non-PyTorch memory, this process has 2.79 GiB memory in use. Of the allocated memory 2.31 GiB is allocated by PyTorch, and 235.30 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+qwen25vl7b chestxdet clean: 553 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:19<01:19, 19.82s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:41<01:02, 20.80s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:54<01:22, 27.39s/it]
+Traceback (most recent call last):
+  File "/home/lakshya/cxr_vlm/generate.py", line 93, in <module>
+    main()
+  File "/home/lakshya/cxr_vlm/generate.py", line 51, in main
+    m, lab = MODELS[a.model](), Labeler("cpu")
+             ^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 184, in <lambda>
+    "qwen25vl7b": lambda: QwenVL("Qwen/Qwen2.5-VL-7B-Instruct"),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 49, in __init__
+    self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 277, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5048, in from_pretrained
+    ) = cls._load_pretrained_model(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5468, in _load_pretrained_model
+    _error_msgs, disk_offload_index = load_shard_file(args)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 843, in load_shard_file
+    disk_offload_index = _load_state_dict_into_meta_model(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 774, in _load_state_dict_into_meta_model
+    hf_quantizer.create_quantized_param(model, param, param_name, param_device)
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 233, in create_quantized_param
+    new_value = bnb.nn.Params4bit(new_value, requires_grad=False, **kwargs).to(target_device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 428, in to
+    return self._quantize(device)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 383, in _quantize
+    w_4bit, quant_state = bnb.functional.quantize_4bit(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/functional.py", line 929, in quantize_4bit
+    _out, _absmax = torch.ops.bitsandbytes.quantize_4bit.default(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_ops.py", line 841, in __call__
+    return self._op(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_compile.py", line 53, in inner
+    return disable_fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1044, in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/library.py", line 732, in func_no_dynamo
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py", line 392, in _
+    out = torch.empty(((n + 1) // (quant_storage.itemsize * 2), 1), device=A.device, dtype=quant_storage)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 34.00 MiB. GPU 0 has a total capacity of 15.47 GiB of which 15.00 MiB is free. Process 1055237 has 314.39 MiB memory in use. Process 4163688 has 354.52 MiB memory in use. Process 323117 has 10.73 GiB memory in use. Including non-PyTorch memory, this process has 3.78 GiB memory in use. Of the allocated memory 3.46 GiB is allocated by PyTorch, and 73.48 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[W1030 01:57:03.608594907 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+qwen25vl7b chestxdet clean: 553 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:19<01:19, 19.84s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:41<01:02, 20.80s/it]Loading checkpoint shards:  60%|██████    | 3/5 [01:01<00:40, 20.40s/it]Loading checkpoint shards:  80%|████████  | 4/5 [01:17<00:18, 18.80s/it]Loading checkpoint shards: 100%|██████████| 5/5 [01:23<00:00, 14.16s/it]Loading checkpoint shards: 100%|██████████| 5/5 [01:23<00:00, 16.70s/it]
+The image processor of type `Qwen2VLImageProcessor` is now loaded as a fast processor by default, even if the model checkpoint was saved with a slow processor. This is a breaking change and may produce slightly different outputs. To continue using the slow processor, instantiate this class with `use_fast=False`. Note that this behavior will be extended to all models in a future release.
+[1/553] 36199 24.7s claims=['enlarged_cardiomediastinum']
+[11/553] 39408 46.8s claims=[]
+[21/553] 39712 42.9s claims=[]
+[31/553] 40078 43.7s claims=['cardiomegaly', 'enlarged_cardiomediastinum']
+[41/553] 40476 34.6s claims=['cardiomegaly', 'enlarged_cardiomediastinum']
+[51/553] 40851 27.3s claims=[]
+[61/553] 41128 45.2s claims=[]
+[71/553] 41221 28.1s claims=[]
+[81/553] 41752 29.7s claims=['opacity']
+[91/553] 41903 23.6s claims=[]
+[101/553] 42359 23.9s claims=[]
+[111/553] 45225 50.2s claims=['cardiomegaly', 'effusion']
+[121/553] 45617 37.4s claims=['enlarged_cardiomediastinum']
+[131/553] 45707 38.3s claims=[]
+[141/553] 45781 40.0s claims=['edema', 'opacity']
+[151/553] 45878 37.8s claims=['cardiomegaly']
+[161/553] 46003 42.3s claims=[]
+[171/553] 46647 45.5s claims=['nodule_mass', 'opacity']
+[181/553] 46949 36.8s claims=[]
+[191/553] 47233 42.7s claims=[]
+[201/553] 48818 34.8s claims=['cardiomegaly']
+[211/553] 55878 27.6s claims=[]
+[221/553] 56568 35.9s claims=['edema', 'enlarged_cardiomediastinum', 'opacity']
+[231/553] 56764 37.7s claims=[]
+[241/553] 57580 35.0s claims=['cardiomegaly']
+[251/553] 58643 37.4s claims=[]
+[261/553] 59344 34.4s claims=['cardiomegaly']
+[271/553] 59589 24.1s claims=[]
+[281/553] 60257 32.8s claims=[]
+[291/553] 60926 47.5s claims=['cardiomegaly', 'consolidation', 'edema', 'enlarged_cardiomediastinum', 'opacity', 'pleural_thickening']
+[301/553] 61979 32.9s claims=[]
+[311/553] 67520 36.6s claims=['edema', 'opacity']
+[321/553] 68891 43.8s claims=[]
+[331/553] 69392 40.8s claims=['enlarged_cardiomediastinum', 'nodule_mass']
+[341/553] 69503 33.1s claims=[]
+[351/553] 69586 23.9s claims=[]
+[361/553] 69882 39.0s claims=[]
+[371/553] 69979 42.9s claims=['enlarged_cardiomediastinum']
+[381/553] 70029 36.6s claims=[]
+[391/553] 70314 43.2s claims=['enlarged_cardiomediastinum']
+[401/553] 70374 45.6s claims=['consolidation', 'nodule_mass', 'opacity', 'pleural_thickening']
+[411/553] 70453 42.2s claims=['consolidation', 'enlarged_cardiomediastinum', 'nodule_mass']
+[421/553] 70935 44.3s claims=['consolidation', 'edema', 'opacity']
+[431/553] 39946 28.0s claims=[]
+[441/553] 40422 33.7s claims=[]
+[451/553] 41503 37.3s claims=['opacity']
+[461/553] 44840 37.1s claims=['cardiomegaly', 'enlarged_cardiomediastinum']
+[471/553] 45816 37.7s claims=[]
+[481/553] 46978 31.8s claims=[]
+[491/553] 56037 27.8s claims=['opacity']
+[501/553] 57785 28.7s claims=['pneumothorax']
+[511/553] 59521 22.0s claims=[]
+[521/553] 60911 33.7s claims=[]
+[531/553] 68900 38.2s claims=[]
+[541/553] 69508 38.3s claims=['enlarged_cardiomediastinum']
+[551/553] 70302 43.3s claims=[]
+[W1030 11:01:12.518212077 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

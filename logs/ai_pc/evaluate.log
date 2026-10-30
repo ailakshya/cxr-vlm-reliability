@@ -1,0 +1,12 @@
+chexagent2 chestxdet clean {'n_images': 553, 'ESP_text': 0.649, 'ESP_iou0.3': 0.378, 'ER_text': 0.376, 'mIoU': 0.256, 'abl_EDI_claims': 0.531, 'abl_EDI_pyes': 0.187}
+chexagent2 chestxdet evmask_1 {'n_images': 304, 'ESP_text': 0.407, 'ESP_iou0.3': 0.0, 'ER_text': 0.128}
+chexagent2 chestxdet randmask_1 {'n_images': 304, 'ESP_text': 0.584, 'ESP_iou0.3': 0.0, 'ER_text': 0.333}
+chexagent2 india_mendeley clean {'n_images': 400, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.583}
+chexagent2 montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.992}
+chexagent2 shenzhen clean {'n_images': 662, 'ESP_text': 0.555, 'ESP_iou0.3': 0.348, 'ER_text': 0.163, 'mIoU': 0.236, 'abl_EDI_claims': 0.579, 'abl_EDI_pyes': 0.212, 'abnormal_AUROC': 0.95}
+chexagent2 shenzhen evmask_1 {'n_images': 289, 'ESP_text': 0.436, 'ESP_iou0.3': 0.0, 'ER_text': 0.049, 'abnormal_AUROC': nan}
+chexagent2 shenzhen randmask_1 {'n_images': 289, 'ESP_text': 0.475, 'ESP_iou0.3': 0.0, 'ER_text': 0.188, 'abnormal_AUROC': nan}
+qwen25vl7b chestxdet clean {'n_images': 553, 'ESP_text': 0.598, 'ESP_iou0.3': 0.301, 'ER_text': 0.089, 'mIoU': 0.195}
+qwen25vl7b chestxdet_bench clean {'n_images': 4, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': 0.0, 'mIoU': 0.198}
+qwen25vl7b montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.706}
+wrote /mnt/hdd/cxr_vlm/results/summary.csv 11 rows

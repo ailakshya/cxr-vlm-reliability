@@ -1,0 +1,5 @@
+2026-10-30T01:56:03+05:30 START qwen25vl7b chestxdet clean 0 5 3
+2026-10-30T01:57:03+05:30 FAILED qwen25vl7b chestxdet clean 0 5 3
+2026-10-30T01:57:03+05:30 START qwen25vl7b shenzhen clean 0 5 3
+2026-10-30T01:57:14+05:30 FAILED qwen25vl7b shenzhen clean 0 5 3
+2026-10-30T01:57:14+05:30 START lingshu7b chestxdet clean 0 5 3

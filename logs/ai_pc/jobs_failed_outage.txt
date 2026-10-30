@@ -1,0 +1,11 @@
+qwen25vl7b shenzhen clean 0 5 3
+lingshu7b chestxdet clean 0 5 3
+lingshu7b shenzhen clean 0 5 3
+qwen25vl7b chestxdet evmask:1 0 3 -1
+qwen25vl7b chestxdet randmask:1 0 3 -1
+qwen25vl7b shenzhen evmask:1 0 3 -1
+qwen25vl7b shenzhen randmask:1 0 3 -1
+lingshu7b chestxdet evmask:1 0 3 -1
+lingshu7b chestxdet randmask:1 0 3 -1
+lingshu7b shenzhen evmask:1 0 3 -1
+lingshu7b shenzhen randmask:1 0 3 -1
