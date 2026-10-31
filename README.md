@@ -4,7 +4,7 @@
 paper/        Springer Nature (sn-jnl) LaTeX manuscript. Build: cd paper && latexmk -pdf main.tex
               Red "TBD" marks every number not measured yet.
 literature/   literature_review.md and the raw research notes behind it.
-experiments/  the pipeline (runs on the AI PC, ssh gpu-remote, code in ~/cxr_vlm, data in /mnt/hdd/cxr_vlm).
+experiments/  the pipeline (runs on the AI PC, ssh gpu-direct, code in ~/cxr_vlm, data in /mnt/hdd/cxr_vlm).
 RUN_LOG.md    one row per queue job: start, duration, images, seconds per image, status (inference only, no training).
 logs/ai_pc/   every log from the AI PC: queue, one generate log per job, downloads, evaluation, job lists.
 results/      per-run scores from evaluate.py (one JSON per model x site x condition) and summary.csv.
