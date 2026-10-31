@@ -46,3 +46,31 @@
 2026-10-30T15:10:40+05:30 START qwen25vl7b montgomery clean 0 0 0
 2026-10-30T15:39:57+05:30 DONE qwen25vl7b montgomery clean 0 0 0
 2026-10-30T15:39:57+05:30 START qwen25vl7b chestxdet_bench clean 0 5 3
+2026-10-30T15:51:57+05:30 DONE qwen25vl7b chestxdet_bench clean 0 5 3
+2026-10-30T15:51:57+05:30 START qwen25vl7b shenzhen clean 0 5 3
+Terminated                 $py generate.py --model "$model" --site "$site" --cond "$cond" --n "$n" --k "$k" --kloc "$kloc" >> "/mnt/hdd/cxr_vlm/logs/gen_${model}_${site}_${cond/:/_}.log" 2>&1
+2026-10-30T15:52:44+05:30 FAILED qwen25vl7b shenzhen clean 0 5 3
+2026-10-30T15:52:44+05:30 START lingshu7b chestxdet clean 0 5 3
+2026-10-30T20:05:10+05:30 DONE lingshu7b chestxdet clean 0 5 3
+2026-10-30T20:05:10+05:30 START qwen25vl7b shenzhen clean 0 5 3
+2026-10-31T02:09:42+05:30 DONE qwen25vl7b shenzhen clean 0 5 3
+2026-10-31T02:09:42+05:30 START lingshu7b shenzhen clean 0 5 3
+Job for csms-voice-llm.service canceled.
+Job for csms-voice.service canceled.
+11259 MiB, 16303 MiB
+2026-10-31T21:45:38+05:30 START lingshu7b shenzhen clean 0 5 3
+2026-10-31T21:45:41+05:30 FAILED lingshu7b shenzhen clean 0 5 3
+2026-10-31T21:45:41+05:30 START qwen25vl7b chestxdet evmask:1 0 3 -1
+2026-10-31T21:47:14+05:30 FAILED qwen25vl7b chestxdet evmask:1 0 3 -1
+2026-10-31T21:47:14+05:30 START qwen25vl7b chestxdet randmask:1 0 3 -1
+2026-10-31T21:47:41+05:30 FAILED qwen25vl7b chestxdet randmask:1 0 3 -1
+2026-10-31T21:47:41+05:30 START qwen25vl7b shenzhen evmask:1 0 3 -1
+2026-10-31T21:48:02+05:30 FAILED qwen25vl7b shenzhen evmask:1 0 3 -1
+2026-10-31T21:48:02+05:30 START qwen25vl7b shenzhen randmask:1 0 3 -1
+2026-10-31T21:48:22+05:30 FAILED qwen25vl7b shenzhen randmask:1 0 3 -1
+2026-10-31T21:48:22+05:30 START lingshu7b chestxdet evmask:1 0 3 -1
+Terminated                 "$@"
+active active active 
+Terminated                 "$@"
+951 MiB, 16303 MiB
+2026-10-31T21:51:18+05:30 START lingshu7b shenzhen clean 0 5 3

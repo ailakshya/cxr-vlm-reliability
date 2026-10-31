@@ -236,3 +236,82 @@ Traceback (most recent call last):
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: (MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /api/models/lingshu-medical-mllm/Lingshu-7B (Caused by NameResolutionError("HTTPSConnection(host=\'huggingface.co\', port=443): Failed to resolve \'huggingface.co\' ([Errno -3] Temporary failure in name resolution)"))'), '(Request ID: 84df4a1c-0fd1-447f-a6a2-bd2c3c2cecb9)')
 [W1030 11:18:18.112014735 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+lingshu7b shenzhen clean: 662 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:20<01:01, 20.53s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:52<00:54, 27.42s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [01:18<00:26, 26.43s/it]Loading checkpoint shards: 100%|██████████| 4/4 [01:27<00:00, 19.65s/it]Loading checkpoint shards: 100%|██████████| 4/4 [01:27<00:00, 21.82s/it]
+The image processor of type `Qwen2VLImageProcessor` is now loaded as a fast processor by default, even if the model checkpoint was saved with a slow processor. This is a breaking change and may produce slightly different outputs. To continue using the slow processor, instantiate this class with `use_fast=False`. Note that this behavior will be extended to all models in a future release.
+[1/662] CHNCXR_0001_0 15.9s claims=[]
+[11/662] CHNCXR_0011_0 15.0s claims=[]
+[21/662] CHNCXR_0021_0 15.1s claims=[]
+[31/662] CHNCXR_0031_0 14.8s claims=[]
+[41/662] CHNCXR_0041_0 14.8s claims=[]
+[51/662] CHNCXR_0051_0 14.4s claims=[]
+[61/662] CHNCXR_0061_0 14.8s claims=[]
+[71/662] CHNCXR_0071_0 14.8s claims=[]
+[81/662] CHNCXR_0081_0 14.8s claims=[]
+[91/662] CHNCXR_0091_0 14.0s claims=[]
+[101/662] CHNCXR_0101_0 14.6s claims=[]
+[111/662] CHNCXR_0111_0 14.0s claims=[]
+[121/662] CHNCXR_0121_0 14.3s claims=[]
+[131/662] CHNCXR_0131_0 13.6s claims=[]
+[141/662] CHNCXR_0141_0 14.9s claims=[]
+[151/662] CHNCXR_0151_0 14.3s claims=[]
+[161/662] CHNCXR_0161_0 14.2s claims=[]
+[171/662] CHNCXR_0171_0 14.8s claims=[]
+[181/662] CHNCXR_0181_0 14.9s claims=[]
+[191/662] CHNCXR_0191_0 15.0s claims=[]
+[201/662] CHNCXR_0201_0 14.8s claims=[]
+[211/662] CHNCXR_0211_0 15.0s claims=[]
+[221/662] CHNCXR_0221_0 14.1s claims=[]
+[231/662] CHNCXR_0231_0 14.8s claims=[]
+[241/662] CHNCXR_0241_0 15.2s claims=[]
+[251/662] CHNCXR_0251_0 14.6s claims=[]
+[261/662] CHNCXR_0261_0 14.8s claims=[]
+[271/662] CHNCXR_0271_0 14.8s claims=[]
+[281/662] CHNCXR_0281_0 14.9s claims=[]
+[291/662] CHNCXR_0291_0 15.0s claims=[]
+[301/662] CHNCXR_0301_0 15.0s claims=[]
+[311/662] CHNCXR_0311_0 14.8s claims=[]
+[321/662] CHNCXR_0321_0 14.8s claims=[]
+[331/662] CHNCXR_0331_1 27.7s claims=[]
+[341/662] CHNCXR_0341_1 26.2s claims=[]
+[351/662] CHNCXR_0351_1 30.9s claims=[]
+[361/662] CHNCXR_0361_1 42.3s claims=['atelectasis', 'effusion']
+[371/662] CHNCXR_0371_1 22.7s claims=[]
+[381/662] CHNCXR_0381_1 34.7s claims=['atelectasis', 'effusion']
+[391/662] CHNCXR_0391_1 20.2s claims=[]
+Traceback (most recent call last):
+  File "/home/lakshya/cxr_vlm/generate.py", line 97, in <module>
+    main()
+  File "/home/lakshya/cxr_vlm/generate.py", line 47, in main
+    done = {json.loads(l)["id"] for l in open(out)} if os.path.exists(out) else set()
+            ^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[W1031 21:45:40.854350920 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Traceback (most recent call last):
+  File "/home/lakshya/cxr_vlm/generate.py", line 97, in <module>
+    main()
+  File "/home/lakshya/cxr_vlm/generate.py", line 47, in main
+    done = {json.loads(l)["id"] for l in open(out)} if os.path.exists(out) else set()
+            ^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[W1031 21:50:17.565447942 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+lingshu7b shenzhen clean: 266 to do, 396 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:04,  1.33s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:23<00:26, 13.40s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:48<00:19, 19.01s/it]

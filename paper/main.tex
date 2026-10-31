@@ -211,7 +211,7 @@ All sites use every image except Mendeley (400 of 799, drawn with a fixed seed) 
 \section{Results}\label{sec:results}
 %=====================================================================
 
-\noindent\tbd[Partial results: CheXagent-2 is complete on the evidence sites, Montgomery and Mendeley; Qwen2.5-VL on ChestX-Det; Lingshu, NITRD, IU-Xray, the calibration split and the corruption grid are running.]
+\noindent\tbd[Partial results: CheXagent-2 is complete on the evidence sites, Montgomery and Mendeley; Qwen2.5-VL on both evidence sites and Montgomery; Lingshu on ChestX-Det and 396 of 662 Shenzhen images. The Qwen-family ablations, NITRD, IU-Xray, the calibration split and the corruption grid are running.]
 
 \subsection{Evidence support across sites (H1)}
 
@@ -231,7 +231,7 @@ Model & ESP & ESP@0.3 & ER & mIoU & ESP & ESP@0.3 & ER & mIoU \\
 \end{tabular}
 \end{table}
 
-Moving from ChestX-Det to Shenzhen, CheXagent-2's evidence-support precision falls from 64.9\% [62--68] to 55.5\% [50--60] and its evidence recall from 37.6\% to 16.3\%, while the box criterion changes much less (ESP@0.3 37.8\% vs.\ 34.8\%, mIoU 0.26 vs.\ 0.24): at the TB site the model claims fewer of the marked lesions and more findings without evidence, but the claims it does support are localised about as well. On ChestX-Det, Qwen2.5-VL reaches a similar text-level precision (59.8\% [54--66]) with a far lower evidence recall (8.9\%): its reports mention few of the marked findings. Text-level and box-level support differ by about 25 points for both models, so a claim that names the right finding is often not placed on it.
+Moving from ChestX-Det to Shenzhen, CheXagent-2's evidence-support precision falls from 64.9\% [62--68] to 55.5\% [50--60] and its evidence recall from 37.6\% to 16.3\%, while the box criterion changes much less (ESP@0.3 37.8\% vs.\ 34.8\%, mIoU 0.26 vs.\ 0.24): at the TB site the model claims fewer of the marked lesions and more findings without evidence, but the claims it does support are localised about as well. On ChestX-Det the two general-domain models reach a similar text-level precision (Qwen2.5-VL 59.8\% [54--66], Lingshu 63.6\% [59--68]) with lower evidence recall (8.9\% and 17.8\%). The shift to the TB site hurts them far more than CheXagent-2: Qwen2.5-VL falls to 24.3\% [17--32] with an evidence recall of 3.3\%, and Lingshu to 50.0\% [37--63] \tbd[(partial)]. The site ranking under ESP therefore changes with the model, and the general-domain model that is best on ChestX-Det is the worst at the TB site. Text-level and box-level support differ by 17--41 points for every model, so a claim that names the right finding is often not placed on it.
 
 \tbd[Compare the site ranking under ESP with the ranking under reference-based metrics (CheXbert F1 on IU-Xray; RadGraph F1 and GREEN once MIMIC-CXR and PadChest-GR are added).]
 
@@ -261,7 +261,7 @@ Model & Site & Sent.\ prob. & Agreement & Yes/no & Box agr. & Self-ground. \\
 \end{tabular}
 \end{table}
 
-The sentence probability, the signal most often used to flag hallucinated sentences, separates supported from unsupported claims worst in every setting (AUROC 0.25--0.47, at or below chance). The three signals that query the image again do better: the yes/no probe is the best single signal in two of three settings (0.79 for CheXagent-2 on Shenzhen, 0.86 for Qwen2.5-VL on ChestX-Det), box agreement is the least stable (0.37--0.70), and the self-grounding score is never far from the best (0.71--0.76) and is the best for CheXagent-2 on ChestX-Det (0.71, ECE 0.05). The self-grounding score is therefore a robust default rather than a uniform winner. \tbd[Same comparison on corrupted images.]
+The sentence probability, the signal most often used to flag hallucinated sentences, separates supported from unsupported claims worst in all six model--site settings (AUROC 0.10--0.47). It is below chance throughout and far below for Qwen2.5-VL (0.25 on ChestX-Det, 0.10 on Shenzhen): the sentences that model writes most confidently are more often unsupported. The yes/no probe is the best single signal in five of six settings (0.66--0.88) and stays strong under the site shift. Box agreement is useful only for the model trained to ground (CheXagent-2, 0.62--0.70; 0.35--0.57 for the others). The self-grounding score, which averages the probe with sample and box agreement, is the best signal for CheXagent-2 on ChestX-Det (0.71, ECE 0.05) but inherits the weakness of box agreement for the general-domain models (0.49 for Lingshu on Shenzhen against 0.77 for the probe). The probe alone is therefore the safer default; box agreement should enter the score only for models with a grounding objective. \tbd[Same comparison on corrupted images.]
 
 \subsection{Conformal transfer (H4) and the site-adaptive filter}
 
@@ -307,7 +307,7 @@ Model & Site & Label & AUROC & Acc. & ECE & Report acc. \\
 \end{tabular}
 \end{table}
 
-CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 and 0.99), but both sites are in its instruction data (Section~\ref{sec:models}), so these figures measure recall of training data rather than transfer. On the unseen Indian Mendeley site its probability of an abnormal film is barely informative (AUROC 0.58, accuracy 51.7\%) and poorly calibrated (ECE 0.36). \tbd[NITRD (unseen, TB) separates the effect of the unseen hospital from the change of task; Qwen-family results.]
+CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 and 0.99), but both sites are in its instruction data (Section~\ref{sec:models}), so these figures measure recall of training data rather than transfer. On the unseen Indian Mendeley site its probability of an abnormal film is barely informative (AUROC 0.58, accuracy 51.7\%) and poorly calibrated (ECE 0.36). For Qwen2.5-VL, whose training data are not published, TB detection is moderate on both public TB sites (AUROC 0.71 on Montgomery, 0.66 on Shenzhen) and poorly calibrated (ECE 0.41 and 0.50); Lingshu reaches 0.82 on Shenzhen \tbd[(partial)]. \tbd[NITRD (unseen, TB) separates the effect of the unseen hospital from the change of task; Qwen-family results.]
 
 %=====================================================================
 \section{Discussion}\label{sec:discussion}
@@ -317,7 +317,7 @@ CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 a
 
 \paragraph{Correct is not the same as grounded.} Three measurements separate a claim that names the right finding from a claim that rests on the evidence for it. About 25 points separate text-level from box-level support, so the model often names a finding it does not place on the marked region. A quarter of evidenced claims survive the removal of all their evidence, so they are made without it. And between 16\% and 23\% of claims vanish after an edit that touches no evidence, so many claims are fragile rather than wrong. Reference-based metrics, and text-level ESP itself, count all three groups as correct. The evidence ablation with a matched control is cheap (two extra reports per image, no localisation) and could be added to any grounded benchmark.
 
-\paragraph{Which confidence to trust.} The token probability of the generated sentence, the most common hallucination signal, is no better than chance at separating supported from unsupported claims for either model. Signals that ask the image again (a yes/no question, repeated sampling, repeated localisation) work much better. Their average, the self-grounding score, is not always the best single signal, but it is never far from it across models and sites; a deployment that cannot tune the signal per model should use it, or the yes/no probe, rather than the sentence probability.
+\paragraph{Which confidence to trust.} The token probability of the generated sentence, the most common hallucination signal, is below chance at separating supported from unsupported claims for every model, and strongly inverted for Qwen2.5-VL. Asking the model a direct yes/no question about the claimed finding is the most reliable signal in almost every setting and costs one forward pass per finding. Box agreement helps only for a model trained to ground; adding it to the score for other models makes the score worse. A deployment that cannot tune the signal per model should use the yes/no probe, never the sentence probability.
 
 \paragraph{Seen and unseen hospitals.} The public TB sites are in CheXagent-2's instruction data, and its near-perfect TB detection there disappears on the unseen Indian site. Public CXR collections are reused so widely in instruction tuning that ``external validation'' on them can measure memorisation; a reliability study has to check each model's training sources and keep at least one site that no model has seen. Here, only the Indian data meet that requirement. \tbd[NITRD, Lingshu and the conformal results will complete this paragraph.]
 

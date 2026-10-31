@@ -225,3 +225,64 @@ Traceback (most recent call last):
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: (MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /api/models/Qwen/Qwen2.5-VL-7B-Instruct (Caused by NameResolutionError("HTTPSConnection(host=\'huggingface.co\', port=443): Failed to resolve \'huggingface.co\' ([Errno -3] Temporary failure in name resolution)"))'), '(Request ID: 34aa72b7-db15-4cd3-bdf1-e7fd48987b47)')
 [W1030 13:52:16.064805650 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+qwen25vl7b chestxdet randmask:1: 304 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:00<00:03,  1.09it/s]Loading checkpoint shards:  40%|████      | 2/5 [00:02<00:03,  1.16s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:03<00:02,  1.24s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:04<00:02,  1.34s/it]
+Traceback (most recent call last):
+  File "/home/lakshya/cxr_vlm/generate.py", line 97, in <module>
+    main()
+  File "/home/lakshya/cxr_vlm/generate.py", line 54, in main
+    m, lab = MODELS[a.model](), Labeler("cpu")
+             ^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 187, in <lambda>
+    "qwen25vl7b": lambda: QwenVL("Qwen/Qwen2.5-VL-7B-Instruct"),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/models.py", line 52, in __init__
+    self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 277, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5048, in from_pretrained
+    ) = cls._load_pretrained_model(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 5468, in _load_pretrained_model
+    _error_msgs, disk_offload_index = load_shard_file(args)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 843, in load_shard_file
+    disk_offload_index = _load_state_dict_into_meta_model(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 774, in _load_state_dict_into_meta_model
+    hf_quantizer.create_quantized_param(model, param, param_name, param_device)
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 233, in create_quantized_param
+    new_value = bnb.nn.Params4bit(new_value, requires_grad=False, **kwargs).to(target_device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 428, in to
+    return self._quantize(device)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 383, in _quantize
+    w_4bit, quant_state = bnb.functional.quantize_4bit(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/functional.py", line 929, in quantize_4bit
+    _out, _absmax = torch.ops.bitsandbytes.quantize_4bit.default(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_ops.py", line 841, in __call__
+    return self._op(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_compile.py", line 53, in inner
+    return disable_fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1044, in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/torch/library.py", line 732, in func_no_dynamo
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lakshya/cxr_vlm/venv/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py", line 392, in _
+    out = torch.empty(((n + 1) // (quant_storage.itemsize * 2), 1), device=A.device, dtype=quant_storage)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 34.00 MiB. GPU 0 has a total capacity of 15.47 GiB of which 9.19 MiB is free. Process 4242 has 314.39 MiB memory in use. Process 442280 has 354.52 MiB memory in use. Process 511234 has 5.73 GiB memory in use. Process 511356 has 4.32 GiB memory in use. Including non-PyTorch memory, this process has 4.46 GiB memory in use. Of the allocated memory 4.06 GiB is allocated by PyTorch, and 146.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[W1031 21:47:41.987400375 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

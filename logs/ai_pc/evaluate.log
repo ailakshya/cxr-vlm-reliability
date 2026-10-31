@@ -6,7 +6,10 @@ chexagent2 montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan
 chexagent2 shenzhen clean {'n_images': 662, 'ESP_text': 0.555, 'ESP_iou0.3': 0.348, 'ER_text': 0.163, 'mIoU': 0.236, 'abl_EDI_claims': 0.579, 'abl_EDI_pyes': 0.212, 'abnormal_AUROC': 0.95}
 chexagent2 shenzhen evmask_1 {'n_images': 289, 'ESP_text': 0.436, 'ESP_iou0.3': 0.0, 'ER_text': 0.049, 'abnormal_AUROC': nan}
 chexagent2 shenzhen randmask_1 {'n_images': 289, 'ESP_text': 0.475, 'ESP_iou0.3': 0.0, 'ER_text': 0.188, 'abnormal_AUROC': nan}
+lingshu7b chestxdet clean {'n_images': 553, 'ESP_text': 0.636, 'ESP_iou0.3': 0.222, 'ER_text': 0.178, 'mIoU': 0.139}
+lingshu7b shenzhen clean {'n_images': 396, 'ESP_text': 0.5, 'ESP_iou0.3': 0.125, 'ER_text': 0.073, 'mIoU': 0.071, 'abnormal_AUROC': 0.736}
 qwen25vl7b chestxdet clean {'n_images': 553, 'ESP_text': 0.598, 'ESP_iou0.3': 0.301, 'ER_text': 0.089, 'mIoU': 0.195}
-qwen25vl7b chestxdet_bench clean {'n_images': 4, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': 0.0, 'mIoU': 0.198}
+qwen25vl7b chestxdet_bench clean {'n_images': 20, 'ESP_text': 0.714, 'ESP_iou0.3': 0.286, 'ER_text': 0.114, 'mIoU': 0.163}
 qwen25vl7b montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.706}
-wrote /mnt/hdd/cxr_vlm/results/summary.csv 11 rows
+qwen25vl7b shenzhen clean {'n_images': 662, 'ESP_text': 0.243, 'ESP_iou0.3': 0.074, 'ER_text': 0.033, 'mIoU': 0.081, 'abnormal_AUROC': 0.623}
+wrote /mnt/hdd/cxr_vlm/results/summary.csv 14 rows

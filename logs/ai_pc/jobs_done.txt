@@ -10,3 +10,6 @@ chexagent2 shenzhen randmask:1 0 3 -1
 chexagent2 montgomery clean 0 0 0
 chexagent2 india_mendeley clean 400 0 0
 qwen25vl7b montgomery clean 0 0 0
+qwen25vl7b chestxdet_bench clean 0 5 3
+lingshu7b chestxdet clean 0 5 3
+qwen25vl7b shenzhen clean 0 5 3
