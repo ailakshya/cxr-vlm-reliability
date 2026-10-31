@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Free the GPU for a batch by pausing the CSMS staging voice services, then put them back.
-#   gpu_pause.sh pause   stop the health timer, voice agent and its Ollama server (cameras are not touched)
+# Free the GPU for a batch by pausing the CSMS staging voice services and the camera grid, then put them back.
+#   gpu_pause.sh pause   stop the health timer, voice agent, its Ollama server and frigate-grid (camera ffmpeg)
+# frigate-grid is a system unit: stopping it needs /etc/sudoers.d/cxr-cameras (NOPASSWD for systemctl stop/start
+# frigate-grid.service); without that rule the cameras are left running.
 #   gpu_pause.sh resume  start them again through systemd
 #   gpu_pause.sh run CMD...   pause, run CMD, always resume afterwards (also on error or Ctrl-C)
 # A copy of the voice agent started by the CI runner outside systemd (port 8765) is stopped on pause;
@@ -23,12 +25,14 @@ pause() {
   for i in $(seq 30); do
     pgrep -f "csms-agents/voice" >/dev/null || pgrep -f "^.venv/bin/python -u service.py" >/dev/null || break; sleep 1
   done
+  sudo -n /usr/bin/systemctl stop frigate-grid.service 2>/dev/null && echo "cameras stopped"   # user asked 2026-10-31
   nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader
 }
 
 resume() {
   systemctl --user start $UNITS
   systemctl --user start csms-voice-health.timer
+  sudo -n /usr/bin/systemctl start frigate-grid.service 2>/dev/null
   echo "$(date -Is) resume" >> "$STATE"
   sleep 15; systemctl --user is-active $UNITS csms-voice-health.timer | tr '\n' ' '; echo
 }

@@ -27,7 +27,7 @@ Images and datasets are not in the repo (licences); `experiments/download_open.p
 | – | `models.py` | Wrappers: CheXagent-2-3B (bf16, own venv with transformers 4.40), Qwen2.5-VL-7B and Lingshu-7B (4-bit) |
 | – | `claims.py`, `common.py` | CheXbert sentence labelling; label mappings, IoU, corruptions, evidence ablation (`evmask` / matched `randmask` control) — each file has a self-check |
 | – | `run_queue.sh`, `jobs.txt` | Runs every line of `jobs.txt` in order; lines can be appended while it runs |
-| – | `gpu_pause.sh` | Pauses the CSMS staging voice services (they hold ~13 GB of GPU memory) for the length of a batch and restarts them after, even on error. Camera ffmpeg processes are never touched |
+| – | `gpu_pause.sh` | Pauses the CSMS staging voice services (they hold ~13 GB of GPU memory) for the length of a batch and restarts them after, even on error. Also stops the camera grid (frigate-grid) when the sudoers rule exists |
 
 ## On the AI PC
 
