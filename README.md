@@ -33,13 +33,18 @@ Images and datasets are not in the repo (licences); `experiments/download_open.p
 
 ```bash
 cd ~/cxr_vlm
-nohup ./gpu_pause.sh run ./run_queue.sh > /mnt/hdd/cxr_vlm/logs/queue.log 2>&1 &   # start (already running)
+systemctl --user start cxr-queue                                                        # start (enabled at boot)
 tail -f /mnt/hdd/cxr_vlm/logs/queue.log                                                # progress
 cat jobs_done.txt jobs_failed.txt                                                        # finished / failed jobs
 venv/bin/python evaluate.py                                                              # results/summary.csv
 ```
 
-To stop: kill `run_queue.sh` and the `generate.py` child; the voice services come back automatically.
+The queue runs as the user service `cxr-queue` (files in `experiments/systemd/`): it starts by itself after a reboot or
+power cut, waits for the voice agent to come up, pauses it, and continues where it stopped. Each finished image is
+forced to disk (fsync), a half-written last line is dropped on restart, jobs wait for free GPU memory instead of
+failing, and `cxr-backup.timer` copies runs, logs and results to `~/cxr_vlm_backup` on the NVMe drive every hour.
+
+To stop: `systemctl --user stop cxr-queue`; the voice services come back automatically.
 Re-starting continues where it stopped (each run file is appended one image at a time).
 
 Gated models (MedGemma 1.5, MAIRA-2) need the terms accepted on Hugging Face and `venv/bin/hf auth login` on the AI PC;

@@ -44,7 +44,15 @@ def main():
         recs = sorted(random.Random(a.seed).sample(recs, a.n), key=lambda r: r["id"])
     out = f"{RUNS}/{a.model}/{a.site}/{a.cond.replace(':', '_')}.jsonl"
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    done = {json.loads(l)["id"] for l in open(out)} if os.path.exists(out) else set()
+    done = set()
+    if os.path.exists(out):   # a power cut can leave a half-written last line: keep only complete lines
+        good = []
+        for l in open(out):
+            try:
+                done.add(json.loads(l)["id"]); good.append(l if l.endswith("\n") else l + "\n")
+            except (ValueError, KeyError):
+                print(f"dropping a broken line in {out}", flush=True)
+        open(out, "w").writelines(good)
     todo = [r for r in recs if r["id"] not in done]
     print(f"{a.model} {a.site} {a.cond}: {len(todo)} to do, {len(done)} done", flush=True)
     if not todo:
@@ -103,7 +111,7 @@ def main():
                 evidence=evidence, has_boxes=r.get("has_boxes", False), reference=r.get("report"),
                 report=rep["text"], report_raw=rep.get("raw"), report_boxes=rep.get("report_boxes"), tokens=rep["tokens"], claims=claims, samples=samples,
                 sample_claims=sample_claims, pyes=pyes, loc=loc, loc_raw=loc_raw, masked=masked, sec=round(time.time() - t0, 2))) + "\n")
-            fo.flush()
+            fo.flush(); os.fsync(fo.fileno())    # on disk now: a power cut loses at most the image in progress
             if i % 10 == 0:
                 print(f"[{i + 1}/{len(todo)}] {r['id']} {time.time() - t0:.1f}s claims={sorted(claims)}", flush=True)
 

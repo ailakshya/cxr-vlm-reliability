@@ -1,0 +1,8 @@
+[Unit]
+Description=Copy CXR VLM runs, logs and results from the HDD to the NVMe drive
+RequiresMountsFor=/mnt/hdd
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'mkdir -p %h/cxr_vlm_backup && rsync -a /mnt/hdd/cxr_vlm/runs /mnt/hdd/cxr_vlm/logs /mnt/hdd/cxr_vlm/results %h/cxr_vlm/jobs.txt %h/cxr_vlm/jobs_done.txt %h/cxr_vlm/jobs_failed.txt %h/cxr_vlm_backup/ && date -Is > %h/cxr_vlm_backup/LAST_BACKUP'
+Nice=10

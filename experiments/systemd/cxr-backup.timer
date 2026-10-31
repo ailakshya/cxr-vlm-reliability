@@ -1,0 +1,10 @@
+[Unit]
+Description=Hourly backup of CXR VLM results to the NVMe drive
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,23 @@
+# Restarts the experiment queue after a reboot or power cut (user unit, linger is on).
+# Install: cp systemd/* ~/.config/systemd/user/ && systemctl --user daemon-reload
+#          systemctl --user enable cxr-queue.service cxr-backup.timer && systemctl --user start cxr-backup.timer
+[Unit]
+Description=CXR VLM experiment queue (pauses the CSMS voice agent while it runs)
+RequiresMountsFor=/mnt/hdd
+# start after the voice agent, so the pause really frees the GPU
+After=csms-voice.service csms-voice-llm.service
+
+[Service]
+WorkingDirectory=%h/cxr_vlm
+# let the voice agent and Ollama finish loading before pausing them
+ExecStartPre=/bin/sleep 90
+ExecStart=%h/cxr_vlm/gpu_pause.sh run %h/cxr_vlm/run_queue.sh
+StandardOutput=append:/mnt/hdd/cxr_vlm/logs/queue.log
+StandardError=append:/mnt/hdd/cxr_vlm/logs/queue.log
+Restart=on-failure
+RestartSec=60
+KillMode=mixed
+TimeoutStopSec=60
+
+[Install]
+WantedBy=default.target
