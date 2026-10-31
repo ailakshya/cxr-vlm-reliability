@@ -12,6 +12,8 @@ WorkingDirectory=%h/cxr_vlm
 # let the voice agent and Ollama finish loading before pausing them
 ExecStartPre=/bin/sleep 90
 ExecStart=%h/cxr_vlm/gpu_pause.sh run %h/cxr_vlm/run_queue.sh
+# a manual stop kills the wrapper before its own resume runs: always bring the voice services (and cameras) back
+ExecStopPost=%h/cxr_vlm/gpu_pause.sh resume
 StandardOutput=append:/mnt/hdd/cxr_vlm/logs/queue.log
 StandardError=append:/mnt/hdd/cxr_vlm/logs/queue.log
 Restart=on-failure
