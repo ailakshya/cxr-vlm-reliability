@@ -53,6 +53,21 @@ def main():
     torch.manual_seed(a.seed)
     m, lab = MODELS[a.model](), Labeler("cpu")
 
+    if kind == "probecheck":   # does batching the yes/no questions (left padding) change P(yes)? writes logs/, no run file
+        qs = [Q_FINDING.format(f=PROMPT_NAME[f]) for f in FINDINGS] + list(Q_EXTRA.values())
+        diffs = []
+        for r in todo:
+            img = Image.open(r["path"]).convert("RGB")
+            b, s = m.p_yes_many(img, qs), [m.p_yes_many(img, [q])[0] for q in qs]
+            diffs += [abs(x - y) for x, y in zip(b, s)]
+        diffs.sort()
+        res = dict(model=a.model, site=a.site, images=len(todo), questions=len(diffs), mean_abs=sum(diffs) / len(diffs),
+                   median_abs=diffs[len(diffs) // 2], p95_abs=diffs[int(0.95 * len(diffs))], max_abs=diffs[-1],
+                   share_over_0_05=sum(d > 0.05 for d in diffs) / len(diffs))
+        json.dump(res, open(f"{RUNS}/../logs/probecheck_{a.model}_{a.site}.json", "w"), indent=1)
+        print(res, flush=True)
+        return
+
     with open(out, "a") as fo:
         for i, r in enumerate(todo):
             t0 = time.time()
