@@ -7,7 +7,7 @@
 
 img is a PIL RGB image. CheXagent-2 needs transformers==4.40 (separate venv); the Qwen-family models use 4.57.
 """
-import os, re, json, tempfile
+import os, re, json, math, tempfile
 import torch
 
 HF = os.environ.get("HF_HOME", "/mnt/hdd/cxr_vlm/hf")
@@ -67,7 +67,7 @@ class QwenVL:
         x, size = self._inputs(img, prompt)
         kw = dict(GEN, do_sample=temp is not None, num_return_sequences=k)
         if max_new_tokens: kw["max_new_tokens"] = max_new_tokens
-        if temp is not None: kw.update(temperature=temp, top_p=0.95)
+        if temp is not None: kw.update(temperature=temp, top_p=0.95, top_k=0)   # top_k=0: override Lingshu's top_k=1
         else: kw.update(temperature=None, top_p=None, top_k=None)
         out = self.model.generate(**x, **kw, output_scores=scores, return_dict_in_generate=True)
         n = x["input_ids"].shape[1]
@@ -183,8 +183,104 @@ class CheXagent2:
         return [self.p_yes(img, q) for q in questions]      # its remote code has no batched image input
 
 
+class QwenVLLM:
+    """Qwen2.5-VL / Lingshu served by vLLM with FP8 weights (venv_vllm). Same prompts and outputs as QwenVL.
+    first_pass_many() sends the report, the K samples and all yes/no questions of several images as one batch."""
+    REPORT, LOCATE = QwenVL.REPORT, QwenVL.LOCATE
+
+    def __init__(self, repo, quant="fp8", mem=0.80):
+        # batch-invariant kernels: the same image gives the same greedy output whatever else is in the batch
+        # (tested: 20/20 identical reports and P(yes) at 1 vs 8 images per call, no speed cost)
+        os.environ.setdefault("VLLM_BATCH_INVARIANT", "1")
+        from vllm import LLM
+        from transformers import AutoProcessor
+        if os.environ.get("HF_HUB_OFFLINE") == "1":
+            from huggingface_hub import snapshot_download
+            repo = snapshot_download(repo, local_files_only=True)
+        px = dict(min_pixels=256 * 28 * 28, max_pixels=1024 * 1024)
+        # generation_config="vllm": ignore the checkpoint's sampling defaults (Lingshu ships top_k=1, which made its
+        # "samples" near-greedy under transformers); only the settings below apply
+        self.llm = LLM(repo, quantization=quant, max_model_len=4096, gpu_memory_utilization=mem, seed=0,
+                       limit_mm_per_prompt={"image": 1}, mm_processor_kwargs=px, generation_config="vllm")
+        self.proc = AutoProcessor.from_pretrained(repo, **px)
+        self.tok = self.llm.get_tokenizer()
+        self.yes, self.no = _yes_no_ids(self.tok)
+        self.special = set(self.tok.all_special_ids)
+
+    def _p(self, img, text):
+        msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": text}]}]
+        return {"prompt": self.proc.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True),
+                "multi_modal_data": {"image": img}}
+
+    def _size(self, img):        # boxes come in pixels of the resized model input
+        t, gh, gw = self.proc.image_processor(images=[img], return_tensors="pt")["image_grid_thw"][0].tolist()
+        return gw * 14, gh * 14
+
+    def _sp(self, **kw):
+        from vllm import SamplingParams
+        return SamplingParams(repetition_penalty=GEN["repetition_penalty"], **kw)
+
+    def _pyes(self, out):
+        lp = out.outputs[0].logprobs[0]                        # top-20 first-token log-probs
+        y = sum(math.exp(lp[i].logprob) for i in self.yes if i in lp)
+        n = sum(math.exp(lp[i].logprob) for i in self.no if i in lp)
+        return y / (y + n) if y + n > 0 else 0.5
+
+    def first_pass_many(self, imgs, k, temp, questions, seeds=None):
+        """Report, K samples and every yes/no question for several images in one vLLM call.
+        seeds: one per image, so each image's samples are reproducible whatever the batch."""
+        prompts, params = [], []
+        g_sp = self._sp(temperature=0, max_tokens=GEN["max_new_tokens"], logprobs=0)
+        q_sp = self._sp(temperature=0, max_tokens=1, logprobs=20)
+        for i, img in enumerate(imgs):
+            prompts.append(self._p(img, self.REPORT)); params.append(g_sp)
+            if k:
+                prompts.append(self._p(img, self.REPORT))
+                params.append(self._sp(n=k, temperature=temp, top_p=0.95, max_tokens=GEN["max_new_tokens"],
+                                       seed=seeds[i] if seeds else None))
+            prompts += [self._p(img, q + " Answer with yes or no.") for q in questions]; params += [q_sp] * len(questions)
+        outs, res, per = self.llm.generate(prompts, params, use_tqdm=False), [], 1 + bool(k) + len(questions)
+        for i in range(len(imgs)):
+            o = outs[i * per:(i + 1) * per]
+            g = o[0].outputs[0]
+            rep = dict(text=g.text.strip(), tokens=[(self.tok.decode([t]), lp[t].logprob)
+                                                    for t, lp in zip(g.token_ids, g.logprobs) if t not in self.special])
+            samples = [x.text.strip() for x in o[1].outputs] if k else []
+            res.append((rep, samples, [self._pyes(x) for x in o[1 + bool(k):]]))
+        return res
+
+    def locate_batch(self, items, k=3, temp=0.7, seeds=None):
+        """items: [(img, [finding names])] -> one dict per item {name: (box lists, raw texts)}, greedy + k samples."""
+        prompts, params, keys = [], [], []
+        g_sp = self._sp(temperature=0, max_tokens=160)
+        for j, (img, fs) in enumerate(items):
+            for n, f in enumerate(fs):
+                p = self._p(img, self.LOCATE.format(f=f))
+                prompts.append(p); params.append(g_sp); keys.append((j, f, "g"))
+                if k:
+                    prompts.append(p); keys.append((j, f, "s"))
+                    params.append(self._sp(n=k, temperature=temp, top_p=0.95, max_tokens=160,
+                                           seed=seeds[j] * 31 + n if seeds else None))
+        outs = self.llm.generate(prompts, params, use_tqdm=False) if prompts else []
+        raw = [{f: [] for f in fs} for _, fs in items]
+        for (j, f, kind), o in zip(keys, outs):
+            raw[j][f] += [x.text.strip() for x in o.outputs]        # greedy first, then its k samples
+        res = []
+        for (img, fs), rj in zip(items, raw):
+            size = self._size(img)
+            res.append({f: ([_boxes_from_numbers(t, size) for t in rj[f]], rj[f]) for f in fs})
+        return res
+
+    def locate(self, img, finding, k=3, temp=0.7):
+        return self.locate_batch([(img, [finding])], k, temp)[0][finding]
+
+
 MODELS = {
-    "qwen25vl7b": lambda: QwenVL("Qwen/Qwen2.5-VL-7B-Instruct"),
-    "lingshu7b": lambda: QwenVL("lingshu-medical-mllm/Lingshu-7B"),
+    # Qwen family: vLLM + FP8 in venv_vllm (5.1x faster than 4-bit transformers on 20 matched images)
+    "qwen25vl7b": lambda: QwenVLLM("Qwen/Qwen2.5-VL-7B-Instruct"),
+    "lingshu7b": lambda: QwenVLLM("lingshu-medical-mllm/Lingshu-7B"),
     "chexagent2": lambda: CheXagent2(),
+    # the earlier 4-bit transformers backend (runs archived in runs_nf4/)
+    "qwen25vl7b_nf4": lambda: QwenVL("Qwen/Qwen2.5-VL-7B-Instruct"),
+    "lingshu7b_nf4": lambda: QwenVL("lingshu-medical-mllm/Lingshu-7B"),
 }

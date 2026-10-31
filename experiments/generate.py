@@ -9,6 +9,7 @@ P(yes) for every finding and for quality / normal / TB questions, and box lists 
 finding that was claimed or has expert evidence. Expert boxes are stored already mapped into the corrupted frame.
 """
 import argparse, json, os, random, time
+from concurrent.futures import ThreadPoolExecutor
 # every model is already cached; skip the Hub check so an internet outage does not kill the run
 # (set HF_HUB_OFFLINE=0 when a new model, e.g. MedGemma, still has to be downloaded)
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
@@ -76,45 +77,77 @@ def main():
         print(res, flush=True)
         return
 
+    qs = [Q_FINDING.format(f=PROMPT_NAME[f]) for f in FINDINGS] + list(Q_EXTRA.values())
+    batched = hasattr(m, "first_pass_many")     # vLLM: several images per GPU call, CheXbert on CPU threads
+    B = int(os.environ.get("CXR_BATCH", 8)) if batched else 1
+
+    def first_pass_many(imgs, seeds):
+        if batched:
+            return m.first_pass_many(imgs, a.k, a.temp, qs, seeds)
+        return [(m.report(i), m.samples(i, a.k, a.temp) if a.k else [], m.p_yes_many(i, qs)) for i in imgs]
+
+    def locate_batch(items, seeds):  # items: [(img, [prompt names])] -> [{name: (boxes, raw)}]
+        if batched:
+            return m.locate_batch(items, k=a.kloc, temp=a.temp, seeds=seeds)
+        # 4-bit transformers: one finding at a time (batching was ~1% faster and changed greedy boxes)
+        return [{f: m.locate(i, f, k=a.kloc, temp=a.temp) for f in fs} for i, fs in items]
+
+    if batched:     # 6 labelling threads x 3 torch threads, leaving cores for the vLLM engine
+        torch.set_num_threads(3)
+    pool = ThreadPoolExecutor(6 if batched else 1)
+    n_done = 0
     with open(out, "a") as fo:
-        for i, r in enumerate(todo):
-            t0 = time.time()
-            img = Image.open(r["path"]).convert("RGB")
-            seed = a.seed + int.from_bytes(r["id"].encode()[-4:], "little")
-            masked = None
-            if ablation:
-                img, masked = mask_evidence(img, r, kind, seed=seed); bf = lambda b: b
-            else:
-                img, bf = corrupt(img, kind, sev, seed=seed)
-            w, h = img.size
-            rep = m.report(img)
-            claims = lab.extract(rep["text"])
-            slp = sentence_logprob(rep["text"], rep["tokens"])
-            for c in claims.values():
-                c["logprob"] = slp[c["sent"]] if c["sent"] < len(slp) else None
-            samples = m.samples(img, a.k, a.temp) if a.k else []
-            sample_claims = [{f: c["status"] for f, c in lab.extract(t).items()} for t in samples]
-            qs = [Q_FINDING.format(f=PROMPT_NAME[f]) for f in FINDINGS] + list(Q_EXTRA.values())
-            pyes = dict(zip(FINDINGS + list(Q_EXTRA), m.p_yes_many(img, qs)))
+        for c0 in range(0, len(todo), B):
+            chunk, t0 = todo[c0:c0 + B], time.time()
+            imgs, maskeds, bfs, seeds = [], [], [], []
+            for r in chunk:
+                img = Image.open(r["path"]).convert("RGB")
+                seed = a.seed + int.from_bytes(r["id"].encode()[-4:], "little")
+                if ablation:
+                    img, masked = mask_evidence(img, r, kind, seed=seed); bf = lambda b: b
+                else:
+                    (img, bf), masked = corrupt(img, kind, sev, seed=seed), None
+                imgs.append(img); maskeds.append(masked); bfs.append(bf); seeds.append(seed)
+            fps = first_pass_many(imgs, seeds)
+            texts = [[rep["text"]] + samples for rep, samples, _ in fps]
+            flat = list(pool.map(lab.extract, [t for ts in texts for t in ts]))
+            labs, j = [], 0
+            for ts in texts:
+                labs.append(flat[j:j + len(ts)]); j += len(ts)
 
-            evidence = {f: [[b[0] / w, b[1] / h, b[2] / w, b[3] / h] for b in map(bf, bs)]
-                        for f, bs in r.get("evidence", {}).items()}
-            loc, loc_raw = {}, {}
-            if r.get("has_boxes") and a.kloc >= 0:          # --kloc -1 skips localisation
-                targets = {f for f in claims if f not in UNVERIFIABLE} | {f for f in evidence if f in FINDINGS}
-                # one finding at a time: batching was ~1% faster and changed the 4-bit greedy boxes (padding)
-                for f in sorted(targets):
-                    loc[f], loc_raw[f] = m.locate(img, PROMPT_NAME[f], k=a.kloc, temp=a.temp)
+            recs_out, loc_items, loc_idx, loc_seeds = [], [], [], []
+            for r, img, masked, bf, seed, (rep, samples, py), lb in zip(chunk, imgs, maskeds, bfs, seeds, fps, labs):
+                w, h = img.size
+                claims = lb[0]
+                slp = sentence_logprob(rep["text"], rep["tokens"])
+                for c in claims.values():
+                    c["logprob"] = slp[c["sent"]] if c["sent"] < len(slp) else None
+                evidence = {f: [[b[0] / w, b[1] / h, b[2] / w, b[3] / h] for b in map(bf, bs)]
+                            for f, bs in r.get("evidence", {}).items()}
+                rec = dict(id=r["id"], site=a.site, cond=a.cond, model=a.model, labels=r.get("labels", {}),
+                           evidence=evidence, has_boxes=r.get("has_boxes", False), reference=r.get("report"),
+                           report=rep["text"], report_raw=rep.get("raw"), report_boxes=rep.get("report_boxes"),
+                           tokens=rep["tokens"], claims=claims, samples=samples,
+                           sample_claims=[{f: c["status"] for f, c in sl.items()} for sl in lb[1:]],
+                           pyes=dict(zip(FINDINGS + list(Q_EXTRA), py)), loc={}, loc_raw={}, masked=masked)
+                if r.get("has_boxes") and a.kloc >= 0:          # --kloc -1 skips localisation
+                    fs = sorted({f for f in claims if f not in UNVERIFIABLE} | {f for f in evidence if f in FINDINGS})
+                    if fs:
+                        loc_items.append((img, [PROMPT_NAME[f] for f in fs])); loc_idx.append((rec, fs))
+                        loc_seeds.append(seed)
+                recs_out.append(rec)
+            for (rec, fs), res in zip(loc_idx, locate_batch(loc_items, loc_seeds) if loc_items else []):
+                for f in fs:
+                    rec["loc"][f], rec["loc_raw"][f] = res[PROMPT_NAME[f]]
 
-            fo.write(json.dumps(dict(
-                id=r["id"], site=a.site, cond=a.cond, model=a.model, labels=r.get("labels", {}),
-                evidence=evidence, has_boxes=r.get("has_boxes", False), reference=r.get("report"),
-                report=rep["text"], report_raw=rep.get("raw"), report_boxes=rep.get("report_boxes"), tokens=rep["tokens"], claims=claims, samples=samples,
-                sample_claims=sample_claims, pyes=pyes, loc=loc, loc_raw=loc_raw, masked=masked, sec=round(time.time() - t0, 2))) + "\n")
-            fo.flush(); os.fsync(fo.fileno())    # on disk now: a power cut loses at most the image in progress
-            if i % 10 == 0:
-                print(f"[{i + 1}/{len(todo)}] {r['id']} {time.time() - t0:.1f}s claims={sorted(claims)}", flush=True)
-
+            sec = round((time.time() - t0) / len(chunk), 2)     # per image (chunk time shared equally)
+            for rec in recs_out:
+                rec["sec"] = sec
+                fo.write(json.dumps(rec) + "\n")
+            fo.flush(); os.fsync(fo.fileno())    # on disk now: a power cut loses at most the chunk in progress
+            if n_done % 10 < len(chunk) or c0 == 0:
+                print(f"[{n_done + 1}/{len(todo)}] {chunk[0]['id']} {sec:.1f}s/img claims={sorted(recs_out[0]['claims'])}", flush=True)
+            n_done += len(chunk)
 
 if __name__ == "__main__":
     main()

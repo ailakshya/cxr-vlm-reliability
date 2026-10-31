@@ -13,7 +13,7 @@ while true; do
   job=$(grep -v '^\s*#' jobs.txt | grep -v '^\s*$' | grep -vxFf jobs_done.txt | grep -vxFf jobs_failed.txt | grep -E "^($ONLY) " | head -1)
   [ -z "$job" ] && { echo "$(date -Is) queue empty"; break; }
   read -r model site cond n k kloc <<< "$job"
-  py=venv/bin/python; [ "$model" = chexagent2 ] && py=venv_chexagent/bin/python
+  py=venv/bin/python; [ "$model" = chexagent2 ] && py=venv_chexagent/bin/python; [[ $model == qwen25vl7b || $model == lingshu7b ]] && py=venv_vllm/bin/python
   [ -f "/mnt/hdd/cxr_vlm/prepared/$site.jsonl" ] || venv/bin/python prepare.py "$site" >> /mnt/hdd/cxr_vlm/logs/prepare.log 2>&1
   if [ ! -f "/mnt/hdd/cxr_vlm/prepared/$site.jsonl" ]; then echo "skip (no manifest): $job"; echo "$job" >> jobs_failed.txt; continue; fi
   # wait for a free GPU instead of failing every job in a row (e.g. the voice agent came back after a reboot)

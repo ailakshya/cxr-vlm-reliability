@@ -17,6 +17,10 @@ class Labeler:
     def __init__(self, device="cpu"):
         import torch, f1chexbert.f1chexbert as fc
         from huggingface_hub import hf_hub_download
+        from transformers import BertTokenizer
+        if not hasattr(BertTokenizer, "encode_plus"):   # transformers 5 (vLLM venv) removed it; f1chexbert passes
+            BertTokenizer.encode_plus = lambda self, toks: {   # word pieces: ids + [CLS]/[SEP], as transformers 4 did
+                "input_ids": [self.cls_token_id] + self.convert_tokens_to_ids(toks) + [self.sep_token_id]}
         os.makedirs(CACHE, exist_ok=True)
         fc.CACHE_DIR = CACHE
         if not os.path.exists(f"{CACHE}/chexbert.pth"):       # the package's own downloader uses a removed hub argument
