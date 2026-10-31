@@ -11,8 +11,13 @@ STATE=/mnt/hdd/cxr_vlm/logs/gpu_pause.state
 
 pause() {
   echo "$(date -Is) pause" >> "$STATE"
-  systemctl --user stop csms-voice-health.timer
-  systemctl --user stop $UNITS
+  # the health check restarts the agent if it fires while we stop it (seen 2026-10-31): stop it too, then retry
+  systemctl --user stop csms-voice-health.timer csms-voice-health.service
+  for i in 1 2 3 4 5; do
+    systemctl --user stop $UNITS
+    systemctl --user is-active --quiet $UNITS || break
+    sleep 5
+  done
   pkill -f "/mnt/hdd/csms-agents/voice/code/.venv/bin/python -u service.py" 2>/dev/null
   pkill -f "^.venv/bin/python -u service.py" 2>/dev/null
   for i in $(seq 30); do
