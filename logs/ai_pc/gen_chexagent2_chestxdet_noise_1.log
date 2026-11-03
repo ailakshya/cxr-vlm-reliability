@@ -1,0 +1,21 @@
+chexagent2 chestxdet noise:1: 100 to do, 0 done
+/home/lakshya/cxr_vlm/venv_chexagent/lib/python3.12/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+/home/lakshya/cxr_vlm/venv_chexagent/lib/python3.12/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+/home/lakshya/cxr_vlm/venv_chexagent/lib/python3.12/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:24<00:49, 24.89s/it]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:48<00:24, 24.34s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:57<00:00, 17.18s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:57<00:00, 19.17s/it]
+[1/100] 36302 12.5s/img claims=[]
+[11/100] 41130 11.4s/img claims=[]
+[21/100] 42341 17.3s/img claims=['cardiomegaly', 'effusion', 'opacity']
+[31/100] 45845 14.1s/img claims=['opacity']
+[41/100] 47291 14.4s/img claims=['nodule_mass']
+[51/100] 56769 8.5s/img claims=[]
+[61/100] 59444 21.7s/img claims=['atelectasis', 'consolidation', 'nodule_mass', 'opacity']
+[71/100] 60926 16.6s/img claims=['cardiomegaly', 'edema']
+[81/100] 68954 15.8s/img claims=['edema', 'effusion', 'opacity']
+[91/100] 69965 14.4s/img claims=['consolidation']
+[W1102 23:36:03.479912846 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

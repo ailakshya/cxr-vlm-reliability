@@ -1,4 +1,3 @@
-qwen25vl7b chestxdet_bench clean 0 5 3
 # phase 1: clean images, evidence sites (full claim + grounding protocol)
 chexagent2 chestxdet clean 0 5 3
 # pilot of the evidence ablation (the full jobs below reuse these images)

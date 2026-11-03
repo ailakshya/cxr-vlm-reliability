@@ -1,0 +1,23 @@
+{
+ "model": "qwen25vl7b",
+ "site": "iuxray",
+ "cond": "clean",
+ "n_images": 500,
+ "sec_per_image": 0.5565599999999999,
+ "n_claims": 0,
+ "ESP_text": NaN,
+ "ESP_iou0.3": NaN,
+ "ESP_iou0.5": NaN,
+ "ESP_point": NaN,
+ "UCR_text": NaN,
+ "ER_text": NaN,
+ "ER_iou0.3": NaN,
+ "ER_iou0.5": NaN,
+ "n_evidenced": 0,
+ "unsupported_per_image": NaN,
+ "quality_mention": 0.002,
+ "p_quality_ok": 0.6909825642878072,
+ "claims_per_image": 0.254,
+ "n_ref": 500,
+ "chexbert_microF1": 0.09504950495049505
+}

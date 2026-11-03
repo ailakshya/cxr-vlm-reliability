@@ -1,15 +1,94 @@
+chexagent2 chestxdet blur_1 {'n_images': 100, 'ESP_text': 0.652, 'ESP_iou0.3': 0.363, 'ER_text': 0.361, 'mIoU': 0.264}
+chexagent2 chestxdet blur_3 {'n_images': 100, 'ESP_text': 0.647, 'ESP_iou0.3': 0.382, 'ER_text': 0.27, 'mIoU': 0.22}
 chexagent2 chestxdet clean {'n_images': 553, 'ESP_text': 0.649, 'ESP_iou0.3': 0.378, 'ER_text': 0.376, 'mIoU': 0.256, 'abl_EDI_claims': 0.531, 'abl_EDI_pyes': 0.187}
+chexagent2 chestxdet contrast_1 {'n_images': 100, 'ESP_text': 0.667, 'ESP_iou0.3': 0.363, 'ER_text': 0.369, 'mIoU': 0.249}
+chexagent2 chestxdet contrast_3 {'n_images': 100, 'ESP_text': 0.677, 'ESP_iou0.3': 0.376, 'ER_text': 0.369, 'mIoU': 0.234}
 chexagent2 chestxdet evmask_1 {'n_images': 304, 'ESP_text': 0.407, 'ESP_iou0.3': 0.0, 'ER_text': 0.128}
+chexagent2 chestxdet jpeg_1 {'n_images': 100, 'ESP_text': 0.674, 'ESP_iou0.3': 0.348, 'ER_text': 0.381, 'mIoU': 0.254}
+chexagent2 chestxdet jpeg_3 {'n_images': 100, 'ESP_text': 0.625, 'ESP_iou0.3': 0.339, 'ER_text': 0.287, 'mIoU': 0.213}
+chexagent2 chestxdet noise_1 {'n_images': 100, 'ESP_text': 0.697, 'ESP_iou0.3': 0.393, 'ER_text': 0.348, 'mIoU': 0.257}
+chexagent2 chestxdet noise_3 {'n_images': 100, 'ESP_text': 0.614, 'ESP_iou0.3': 0.386, 'ER_text': 0.254, 'mIoU': 0.22}
 chexagent2 chestxdet randmask_1 {'n_images': 304, 'ESP_text': 0.584, 'ESP_iou0.3': 0.0, 'ER_text': 0.333}
+chexagent2 chestxdet rotate_1 {'n_images': 100, 'ESP_text': 0.692, 'ESP_iou0.3': 0.411, 'ER_text': 0.414, 'mIoU': 0.255}
+chexagent2 chestxdet rotate_3 {'n_images': 100, 'ESP_text': 0.701, 'ESP_iou0.3': 0.299, 'ER_text': 0.365, 'mIoU': 0.195}
+chexagent2 chestxdet_cal clean {'n_images': 300, 'ESP_text': 0.6, 'ESP_iou0.3': 0.315, 'ER_text': 0.369, 'mIoU': 0.24}
 chexagent2 india_mendeley clean {'n_images': 400, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.583}
+chexagent2 india_nitrd clean {'n_images': 244, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.974}
+chexagent2 iuxray clean {'n_images': 500, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan}
 chexagent2 montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.992}
+chexagent2 shenzhen blur_1 {'n_images': 100, 'ESP_text': 0.469, 'ESP_iou0.3': 0.281, 'ER_text': 0.095, 'mIoU': 0.181, 'abnormal_AUROC': 0.906}
+chexagent2 shenzhen blur_3 {'n_images': 100, 'ESP_text': 0.52, 'ESP_iou0.3': 0.16, 'ER_text': 0.082, 'mIoU': 0.103, 'abnormal_AUROC': 0.79}
 chexagent2 shenzhen clean {'n_images': 662, 'ESP_text': 0.555, 'ESP_iou0.3': 0.348, 'ER_text': 0.163, 'mIoU': 0.236, 'abl_EDI_claims': 0.579, 'abl_EDI_pyes': 0.212, 'abnormal_AUROC': 0.95}
+chexagent2 shenzhen contrast_1 {'n_images': 100, 'ESP_text': 0.475, 'ESP_iou0.3': 0.23, 'ER_text': 0.184, 'mIoU': 0.181, 'abnormal_AUROC': 0.932}
+chexagent2 shenzhen contrast_3 {'n_images': 100, 'ESP_text': 0.459, 'ESP_iou0.3': 0.213, 'ER_text': 0.177, 'mIoU': 0.147, 'abnormal_AUROC': 0.914}
 chexagent2 shenzhen evmask_1 {'n_images': 289, 'ESP_text': 0.436, 'ESP_iou0.3': 0.0, 'ER_text': 0.049, 'abnormal_AUROC': nan}
+chexagent2 shenzhen jpeg_1 {'n_images': 100, 'ESP_text': 0.507, 'ESP_iou0.3': 0.232, 'ER_text': 0.222, 'mIoU': 0.193, 'abnormal_AUROC': 0.938}
+chexagent2 shenzhen jpeg_3 {'n_images': 100, 'ESP_text': 0.419, 'ESP_iou0.3': 0.256, 'ER_text': 0.114, 'mIoU': 0.105, 'abnormal_AUROC': 0.655}
+chexagent2 shenzhen noise_1 {'n_images': 100, 'ESP_text': 0.492, 'ESP_iou0.3': 0.23, 'ER_text': 0.19, 'mIoU': 0.166, 'abnormal_AUROC': 0.892}
+chexagent2 shenzhen noise_3 {'n_images': 100, 'ESP_text': 0.4, 'ESP_iou0.3': 0.14, 'ER_text': 0.127, 'mIoU': 0.1, 'abnormal_AUROC': 0.611}
 chexagent2 shenzhen randmask_1 {'n_images': 289, 'ESP_text': 0.475, 'ESP_iou0.3': 0.0, 'ER_text': 0.188, 'abnormal_AUROC': nan}
-lingshu7b chestxdet clean {'n_images': 553, 'ESP_text': 0.636, 'ESP_iou0.3': 0.222, 'ER_text': 0.178, 'mIoU': 0.139}
-lingshu7b shenzhen clean {'n_images': 396, 'ESP_text': 0.5, 'ESP_iou0.3': 0.125, 'ER_text': 0.073, 'mIoU': 0.071, 'abnormal_AUROC': 0.736}
-qwen25vl7b chestxdet clean {'n_images': 553, 'ESP_text': 0.598, 'ESP_iou0.3': 0.301, 'ER_text': 0.089, 'mIoU': 0.195}
-qwen25vl7b chestxdet_bench clean {'n_images': 20, 'ESP_text': 0.714, 'ESP_iou0.3': 0.286, 'ER_text': 0.114, 'mIoU': 0.163}
-qwen25vl7b montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.706}
-qwen25vl7b shenzhen clean {'n_images': 662, 'ESP_text': 0.243, 'ESP_iou0.3': 0.074, 'ER_text': 0.033, 'mIoU': 0.081, 'abnormal_AUROC': 0.623}
-wrote /mnt/hdd/cxr_vlm/results/summary.csv 14 rows
+chexagent2 shenzhen rotate_1 {'n_images': 100, 'ESP_text': 0.462, 'ESP_iou0.3': 0.308, 'ER_text': 0.114, 'mIoU': 0.178, 'abnormal_AUROC': 0.928}
+chexagent2 shenzhen rotate_3 {'n_images': 100, 'ESP_text': 0.516, 'ESP_iou0.3': 0.29, 'ER_text': 0.101, 'mIoU': 0.116, 'abnormal_AUROC': 0.896}
+lingshu7b chestxdet blur_1 {'n_images': 100, 'ESP_text': 0.606, 'ESP_iou0.3': 0.273, 'ER_text': 0.082, 'mIoU': 0.174}
+lingshu7b chestxdet blur_3 {'n_images': 100, 'ESP_text': 0.811, 'ESP_iou0.3': 0.324, 'ER_text': 0.123, 'mIoU': 0.163}
+lingshu7b chestxdet clean {'n_images': 553, 'ESP_text': 0.661, 'ESP_iou0.3': 0.255, 'ER_text': 0.14, 'mIoU': 0.158, 'abl_EDI_claims': 0.387, 'abl_EDI_pyes': 0.193}
+lingshu7b chestxdet contrast_1 {'n_images': 100, 'ESP_text': 0.722, 'ESP_iou0.3': 0.361, 'ER_text': 0.107, 'mIoU': 0.172}
+lingshu7b chestxdet contrast_3 {'n_images': 100, 'ESP_text': 0.771, 'ESP_iou0.3': 0.371, 'ER_text': 0.111, 'mIoU': 0.187}
+lingshu7b chestxdet evmask_1 {'n_images': 304, 'ESP_text': 0.509, 'ESP_iou0.3': 0.0, 'ER_text': 0.036}
+lingshu7b chestxdet jpeg_1 {'n_images': 100, 'ESP_text': 0.667, 'ESP_iou0.3': 0.364, 'ER_text': 0.09, 'mIoU': 0.159}
+lingshu7b chestxdet jpeg_3 {'n_images': 100, 'ESP_text': 0.56, 'ESP_iou0.3': 0.4, 'ER_text': 0.057, 'mIoU': 0.147}
+lingshu7b chestxdet noise_1 {'n_images': 100, 'ESP_text': 0.609, 'ESP_iou0.3': 0.239, 'ER_text': 0.115, 'mIoU': 0.16}
+lingshu7b chestxdet noise_3 {'n_images': 100, 'ESP_text': 0.375, 'ESP_iou0.3': 0.125, 'ER_text': 0.012, 'mIoU': 0.141}
+lingshu7b chestxdet randmask_1 {'n_images': 304, 'ESP_text': 0.588, 'ESP_iou0.3': 0.0, 'ER_text': 0.089}
+lingshu7b chestxdet rotate_1 {'n_images': 100, 'ESP_text': 0.667, 'ESP_iou0.3': 0.278, 'ER_text': 0.148, 'mIoU': 0.171}
+lingshu7b chestxdet rotate_3 {'n_images': 100, 'ESP_text': 0.576, 'ESP_iou0.3': 0.288, 'ER_text': 0.156, 'mIoU': 0.17}
+lingshu7b chestxdet_cal clean {'n_images': 300, 'ESP_text': 0.56, 'ESP_iou0.3': 0.227, 'ER_text': 0.121, 'mIoU': 0.155}
+lingshu7b india_mendeley clean {'n_images': 400, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.754}
+lingshu7b india_nitrd clean {'n_images': 244, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.936}
+lingshu7b iuxray clean {'n_images': 500, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan}
+lingshu7b montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.912}
+lingshu7b shenzhen blur_1 {'n_images': 100, 'ESP_text': 0.021, 'ESP_iou0.3': 0.0, 'ER_text': 0.006, 'mIoU': 0.074, 'abnormal_AUROC': 0.689}
+lingshu7b shenzhen blur_3 {'n_images': 100, 'ESP_text': 0.2, 'ESP_iou0.3': 0.0, 'ER_text': 0.006, 'mIoU': 0.064, 'abnormal_AUROC': 0.617}
+lingshu7b shenzhen clean {'n_images': 662, 'ESP_text': 0.602, 'ESP_iou0.3': 0.195, 'ER_text': 0.071, 'mIoU': 0.087, 'abl_EDI_claims': 0.091, 'abl_EDI_pyes': 0.181, 'abnormal_AUROC': 0.783}
+lingshu7b shenzhen contrast_1 {'n_images': 100, 'ESP_text': 1.0, 'ESP_iou0.3': 0.25, 'ER_text': 0.025, 'mIoU': 0.093, 'abnormal_AUROC': 0.815}
+lingshu7b shenzhen contrast_3 {'n_images': 100, 'ESP_text': 0.5, 'ESP_iou0.3': 0.5, 'ER_text': 0.006, 'mIoU': 0.1, 'abnormal_AUROC': 0.738}
+lingshu7b shenzhen evmask_1 {'n_images': 289, 'ESP_text': 0.5, 'ESP_iou0.3': 0.0, 'ER_text': 0.002, 'abnormal_AUROC': nan}
+lingshu7b shenzhen jpeg_1 {'n_images': 100, 'ESP_text': 0.095, 'ESP_iou0.3': 0.048, 'ER_text': 0.013, 'mIoU': 0.071, 'abnormal_AUROC': 0.738}
+lingshu7b shenzhen jpeg_3 {'n_images': 100, 'ESP_text': 0.065, 'ESP_iou0.3': 0.0, 'ER_text': 0.013, 'mIoU': 0.058, 'abnormal_AUROC': 0.614}
+lingshu7b shenzhen noise_1 {'n_images': 100, 'ESP_text': 0.375, 'ESP_iou0.3': 0.125, 'ER_text': 0.038, 'mIoU': 0.097, 'abnormal_AUROC': 0.723}
+lingshu7b shenzhen noise_3 {'n_images': 100, 'ESP_text': 0.333, 'ESP_iou0.3': 0.0, 'ER_text': 0.013, 'mIoU': 0.054, 'abnormal_AUROC': 0.421}
+lingshu7b shenzhen randmask_1 {'n_images': 289, 'ESP_text': 0.444, 'ESP_iou0.3': 0.0, 'ER_text': 0.009, 'abnormal_AUROC': nan}
+lingshu7b shenzhen rotate_1 {'n_images': 100, 'ESP_text': 0.538, 'ESP_iou0.3': 0.154, 'ER_text': 0.089, 'mIoU': 0.069, 'abnormal_AUROC': 0.818}
+lingshu7b shenzhen rotate_3 {'n_images': 100, 'ESP_text': 0.364, 'ESP_iou0.3': 0.182, 'ER_text': 0.025, 'mIoU': 0.091, 'abnormal_AUROC': 0.704}
+qwen25vl7b chestxdet blur_1 {'n_images': 100, 'ESP_text': 0.6, 'ESP_iou0.3': 0.267, 'ER_text': 0.037, 'mIoU': 0.237}
+qwen25vl7b chestxdet blur_3 {'n_images': 100, 'ESP_text': 0.7, 'ESP_iou0.3': 0.4, 'ER_text': 0.029, 'mIoU': 0.212}
+qwen25vl7b chestxdet clean {'n_images': 553, 'ESP_text': 0.577, 'ESP_iou0.3': 0.327, 'ER_text': 0.064, 'mIoU': 0.219, 'abl_EDI_claims': 0.04, 'abl_EDI_pyes': 0.05}
+qwen25vl7b chestxdet contrast_1 {'n_images': 100, 'ESP_text': 0.684, 'ESP_iou0.3': 0.289, 'ER_text': 0.107, 'mIoU': 0.248}
+qwen25vl7b chestxdet contrast_3 {'n_images': 100, 'ESP_text': 0.632, 'ESP_iou0.3': 0.316, 'ER_text': 0.049, 'mIoU': 0.247}
+qwen25vl7b chestxdet evmask_1 {'n_images': 304, 'ESP_text': 0.472, 'ESP_iou0.3': 0.0, 'ER_text': 0.032}
+qwen25vl7b chestxdet jpeg_1 {'n_images': 100, 'ESP_text': 0.5, 'ESP_iou0.3': 0.375, 'ER_text': 0.033, 'mIoU': 0.242}
+qwen25vl7b chestxdet jpeg_3 {'n_images': 100, 'ESP_text': 0.583, 'ESP_iou0.3': 0.267, 'ER_text': 0.143, 'mIoU': 0.228}
+qwen25vl7b chestxdet noise_1 {'n_images': 100, 'ESP_text': 0.474, 'ESP_iou0.3': 0.421, 'ER_text': 0.037, 'mIoU': 0.253}
+qwen25vl7b chestxdet noise_3 {'n_images': 100, 'ESP_text': 0.662, 'ESP_iou0.3': 0.25, 'ER_text': 0.184, 'mIoU': 0.206}
+qwen25vl7b chestxdet randmask_1 {'n_images': 304, 'ESP_text': 0.426, 'ESP_iou0.3': 0.0, 'ER_text': 0.051}
+qwen25vl7b chestxdet rotate_1 {'n_images': 100, 'ESP_text': 0.656, 'ESP_iou0.3': 0.281, 'ER_text': 0.086, 'mIoU': 0.228}
+qwen25vl7b chestxdet rotate_3 {'n_images': 100, 'ESP_text': 0.532, 'ESP_iou0.3': 0.319, 'ER_text': 0.102, 'mIoU': 0.228}
+qwen25vl7b chestxdet_cal clean {'n_images': 300, 'ESP_text': 0.526, 'ESP_iou0.3': 0.244, 'ER_text': 0.063, 'mIoU': 0.23}
+qwen25vl7b india_mendeley clean {'n_images': 400, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.714}
+qwen25vl7b india_nitrd clean {'n_images': 244, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.737}
+qwen25vl7b iuxray clean {'n_images': 500, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan}
+qwen25vl7b montgomery clean {'n_images': 138, 'ESP_text': nan, 'ESP_iou0.3': nan, 'ER_text': nan, 'abnormal_AUROC': 0.691}
+qwen25vl7b shenzhen blur_1 {'n_images': 100, 'ESP_text': 0.5, 'ESP_iou0.3': 0.0, 'ER_text': 0.013, 'mIoU': 0.073, 'abnormal_AUROC': 0.539}
+qwen25vl7b shenzhen blur_3 {'n_images': 100, 'ESP_text': 1.0, 'ESP_iou0.3': 0.0, 'ER_text': 0.013, 'mIoU': 0.077, 'abnormal_AUROC': 0.553}
+qwen25vl7b shenzhen clean {'n_images': 662, 'ESP_text': 0.667, 'ESP_iou0.3': 0.4, 'ER_text': 0.018, 'mIoU': 0.091, 'abl_EDI_claims': -0.167, 'abl_EDI_pyes': 0.009, 'abnormal_AUROC': 0.63}
+qwen25vl7b shenzhen contrast_1 {'n_images': 100, 'ESP_text': 0.75, 'ESP_iou0.3': 0.25, 'ER_text': 0.019, 'mIoU': 0.072, 'abnormal_AUROC': 0.61}
+qwen25vl7b shenzhen contrast_3 {'n_images': 100, 'ESP_text': 0.8, 'ESP_iou0.3': 0.2, 'ER_text': 0.025, 'mIoU': 0.066, 'abnormal_AUROC': 0.617}
+qwen25vl7b shenzhen evmask_1 {'n_images': 289, 'ESP_text': 0.538, 'ESP_iou0.3': 0.0, 'ER_text': 0.008, 'abnormal_AUROC': nan}
+qwen25vl7b shenzhen jpeg_1 {'n_images': 100, 'ESP_text': 1.0, 'ESP_iou0.3': 0.0, 'ER_text': 0.025, 'mIoU': 0.062, 'abnormal_AUROC': 0.615}
+qwen25vl7b shenzhen jpeg_3 {'n_images': 100, 'ESP_text': 0.438, 'ESP_iou0.3': 0.125, 'ER_text': 0.044, 'mIoU': 0.073, 'abnormal_AUROC': 0.605}
+qwen25vl7b shenzhen noise_1 {'n_images': 100, 'ESP_text': 1.0, 'ESP_iou0.3': 0.333, 'ER_text': 0.019, 'mIoU': 0.063, 'abnormal_AUROC': 0.631}
+qwen25vl7b shenzhen noise_3 {'n_images': 100, 'ESP_text': 0.379, 'ESP_iou0.3': 0.0, 'ER_text': 0.07, 'mIoU': 0.08, 'abnormal_AUROC': 0.468}
+qwen25vl7b shenzhen randmask_1 {'n_images': 289, 'ESP_text': 0.545, 'ESP_iou0.3': 0.0, 'ER_text': 0.007, 'abnormal_AUROC': nan}
+qwen25vl7b shenzhen rotate_1 {'n_images': 100, 'ESP_text': 0.833, 'ESP_iou0.3': 0.167, 'ER_text': 0.032, 'mIoU': 0.076, 'abnormal_AUROC': 0.739}
+qwen25vl7b shenzhen rotate_3 {'n_images': 100, 'ESP_text': 0.125, 'ESP_iou0.3': 0.0, 'ER_text': 0.006, 'mIoU': 0.06, 'abnormal_AUROC': 0.624}
+wrote /mnt/hdd/cxr_vlm/results/summary.csv 93 rows

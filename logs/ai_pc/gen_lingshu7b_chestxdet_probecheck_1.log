@@ -1,0 +1,6 @@
+lingshu7b chestxdet probecheck:1: 30 to do, 0 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:19<00:58, 19.44s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:23<00:21, 10.62s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:25<00:06,  6.61s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:26<00:00,  4.12s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:26<00:00,  6.51s/it]
+The image processor of type `Qwen2VLImageProcessor` is now loaded as a fast processor by default, even if the model checkpoint was saved with a slow processor. This is a breaking change and may produce slightly different outputs. To continue using the slow processor, instantiate this class with `use_fast=False`. Note that this behavior will be extended to all models in a future release.
+{'model': 'lingshu7b', 'site': 'chestxdet', 'images': 30, 'questions': 360, 'mean_abs': 0.006190032531224188, 'median_abs': 9.126729411113033e-07, 'p95_abs': 0.030485089896558404, 'max_abs': 0.03120954117238095, 'share_over_0_05': 0.0}
+[W1031 22:20:13.766140081 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

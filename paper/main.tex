@@ -1,5 +1,4 @@
 %% Springer Nature journal template (sn-jnl), numbered references.
-%% DRAFT: every number in the Results section is a placeholder (\tbd) until the experiments are run.
 \documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
 
 \usepackage{graphicx}
@@ -39,7 +38,7 @@
 
 \affil*[1]{\orgdiv{Department of Artificial Intelligence and Machine Learning, School of Computer Science and Engineering}, \orgname{Manipal University Jaipur}, \orgaddress{\street{Jaipur--Ajmer Express Highway}, \city{Jaipur}, \postcode{303007}, \state{Rajasthan}, \country{India}}}
 
-\abstract{Vision-language models (VLMs) now write chest X-ray (CXR) reports, and some also return a box for each finding. Their reliability is still measured almost entirely by comparing the generated report with a reference report written at the same hospital. Under distribution shift this comparison is confounded, because a change of hospital changes the reporting style as well as the images, so a drop in a reference-based score cannot be separated from a change in how reports are written. We propose an evaluation that checks every positive finding a VLM claims against independent image evidence: bounding boxes drawn by expert radiologists. We define the Evidence-Support Precision (ESP), the share of claimed findings that are supported by expert evidence in the same image, together with its complement, the unsupported-claim rate, and evidence recall. We use the agreement of a claim's localisation across sampled generations as a confidence signal for abstention. We evaluate open VLMs that localise their own findings (CheXagent-2, Qwen2.5-VL and Lingshu, with MedGemma~1.5 and MAIRA-2 added once access is granted) on six public sites from three countries (USA, China and India) and under five families of image corruption at two severities. We introduce an evidence-ablation test that removes the expert-marked regions from the image, against a control that removes equal areas elsewhere in the lungs, to measure whether a claim depends on its evidence at all. We further test whether conformal claim filters calibrated at one site keep their guarantee at others, and propose a training-free self-grounding filter whose threshold is recalibrated at a new hospital from a few dozen labelled images. \tbd[Results summary to be written after the experiments.] Code, prompts and label mappings will be released.}
+\abstract{Vision-language models (VLMs) now write chest X-ray (CXR) reports, and some also return a box for each finding. Their reliability is still measured almost entirely by comparing the generated report with a reference report written at the same hospital. Under distribution shift this comparison is confounded, because a change of hospital changes the reporting style as well as the images, so a drop in a reference-based score cannot be separated from a change in how reports are written. We propose an evaluation that checks every positive finding a VLM claims against independent image evidence: bounding boxes drawn by expert radiologists. We define the Evidence-Support Precision (ESP), the share of claimed findings that are supported by expert evidence in the same image, together with its complement, the unsupported-claim rate, and evidence recall. We use the agreement of a claim's localisation across sampled generations as a confidence signal for abstention. We evaluate open VLMs that localise their own findings (CheXagent-2, Qwen2.5-VL and Lingshu, with MedGemma~1.5 and MAIRA-2 added once access is granted) on six public sites from three countries (USA, China and India) and under five families of image corruption at two severities. We introduce an evidence-ablation test that removes the expert-marked regions from the image, against a control that removes equal areas elsewhere in the lungs, to measure whether a claim depends on its evidence at all. We further test whether conformal claim filters calibrated at one site keep their guarantee at others, and propose a training-free self-grounding filter whose threshold is recalibrated at a new hospital from a few dozen labelled images. Across the six sites, moving from the NIH-derived site to the Chinese TB site lowers evidence recall for every model (CheXagent-2: 37.6\% to 16.3\%) far more than it lowers ESP, and models claim fewer findings rather than more unsupported ones. Text-level and box-level support differ by 21--41 points, so a correctly named finding is often not placed on its evidence. The sentence probability ranks supported claims below chance in every model--site setting (AUROC 0.25--0.47), whereas a yes/no probe reaches 0.69--0.93. Qwen2.5-VL's claims are lost as often after an unrelated edit as after the removal of their evidence (evidence-dependence index 4 and $-17$ points), against 53 and 58 points for CheXagent-2. Under severe blur, noise or JPEG compression the Qwen-family models assign the image a low quality when asked (P(adequate) down to 0.001), yet no model mentions the degradation in more than 4\% of reports. Conformal claim filters calibrated at one site over-cover rather than under-cover at the TB site and discard most claims; recalibrating from 50 local images restores the target coverage while keeping 3.8 times as many claims. Code, prompts and label mappings will be released.}
 
 \keywords{Vision-language models, Chest X-ray, Radiology report generation, Grounding, Hallucination, Distribution shift, Calibration, Selective prediction, Conformal prediction}
 
@@ -89,7 +88,7 @@ We test four hypotheses. \textbf{H1}: drops in reference-based metrics across si
 Table~\ref{tab:datasets} lists the data. Expert boxes provide the evidence, and report-bearing sets let us compare ESP with reference-based metrics. Label-only sets serve as classification-style probes.
 
 \begin{table}[t]
-\caption{Datasets. \emph{Role}: E = expert box evidence, R = reference reports, L = image-level labels only. Access: O = open download, F = free registration, P = PhysioNet credentialed, Q = on request. The last three rows are added when access is granted.}\label{tab:datasets}
+\caption{Datasets. \emph{Role}: E = expert box evidence, R = reference reports, L = image-level labels only. Access: O = open download, F = free registration, P = PhysioNet credentialed, Q = on request. The last three rows were not evaluated in this study (access pending).}\label{tab:datasets}
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}\begin{tabular}{@{}p{3.2cm}lrp{2.6cm}cc@{}}
@@ -102,20 +101,20 @@ Shenzhen~\cite{shenzhen,shenzhenroi} & China & 662 & TB; typed lesion outlines &
 Montgomery~\cite{shenzhen} & USA & 138 & TB label & O & L \\
 IU-Xray~\cite{iuxray} & USA (Indiana) & 500 & reports & O & R \\
 Mendeley CXR~\cite{mendeleyin} & India (3 hospitals) & 400 of 799 & COVID / abnormal / normal & O & L \\
-NITRD TB A/B~\cite{nitrd} & India (New Delhi) & 306 & TB / non-TB, 2 scanners & O & L \\
+NITRD TB A/B~\cite{nitrd} & India (New Delhi) & 244 & TB / non-TB, 2 scanners & O & L \\
 \midrule
-MIMIC-CXR + MS-CXR~\cite{maira2} & USA (Boston) & \tbd & reports, phrase boxes & P & R, E \\
-VinDr-CXR~\cite{vindr} & Vietnam & \tbd & boxes, 22 findings & P & E \\
-PadChest-GR~\cite{padchest,padchestgr} & Spain & \tbd & grounded reports & Q & R, E \\
+MIMIC-CXR + MS-CXR~\cite{maira2} & USA (Boston) & -- & reports, phrase boxes & P & R, E \\
+VinDr-CXR~\cite{vindr} & Vietnam & -- & boxes, 22 findings & P & E \\
+PadChest-GR~\cite{padchest,padchestgr} & Spain & -- & grounded reports & Q & R, E \\
 \botrule
 \end{tabular}
 \end{table}
 
-\paragraph{Site.} Each source is treated as a site. The two evidence sites differ in country, scanner and annotation protocol. In ChestX-Det the boxes of 13 classes are mapped to the shared space $\mathcal{F}$; calcification, emphysema and fibrosis have no counterpart and support only the generic \emph{opacity} claim. In Shenzhen, two radiologists outlined every lung lesion of the TB-positive films and named its type~\cite{shenzhenroi}; infiltrates map to consolidation, nodules and cavities to nodule/mass, and effusion and apical, interlobar or other pleural thickening to their counterparts. Normal Shenzhen films have no lesions, so every finding is absent there; on TB films the heart and bones were not reviewed, so cardiomegaly and fracture claims are excluded as unverifiable. Indian data have image-level labels only and are evaluated as a normal/abnormal or TB probe (accuracy, calibration and selective risk), not with ESP. MIMIC-CXR is the in-distribution anchor because most models were trained on it; MS-CXR is reported separately for models that saw it in training (MAIRA-2, RadVLM).
+\paragraph{Site.} Each source is treated as a site. The two evidence sites differ in country, scanner and annotation protocol. In ChestX-Det the boxes of 13 classes are mapped to the shared space $\mathcal{F}$; calcification and fibrosis have no counterpart and support only the generic \emph{opacity} claim, and emphysema supports no claim. In Shenzhen, two radiologists outlined every lung lesion of the TB-positive films and named its type~\cite{shenzhenroi}; infiltrates map to consolidation, nodules and cavities to nodule/mass, and effusion and apical, interlobar or other pleural thickening to their counterparts. Normal Shenzhen films have no lesions, so every finding is absent there; on TB films the heart and bones were not reviewed, so cardiomegaly and fracture claims are excluded as unverifiable. Indian data have image-level labels only and are evaluated as a normal/abnormal or TB probe (accuracy, calibration and selective risk), not with ESP. MIMIC-CXR, on which most models were trained, would serve as an in-distribution anchor once access is granted.
 
 \paragraph{Image quality.} Following MedMNIST-C~\cite{medmnistc}, we apply five corruption families at a mild and a severe level to 100 images from each evidence site: additive Gaussian noise ($\sigma=0.04, 0.16$ on a $[0,1]$ scale), Gaussian blur ($\sigma=1, 4$ pixels per 512 pixels of image size), JPEG compression (quality 30, 5), contrast reduction (factor 0.6, 0.25 around mid-grey) and rotation ($5^\circ, 20^\circ$). Expert boxes are rotated with the image.
 
-\paragraph{Acquisition and demographics.} View position (AP vs.\ PA, portable vs.\ fixed) and sex and age groups are analysed once CheXpert Plus and MIMIC-CXR, which carry this metadata, are added. Within the open sites, NITRD Datasets A and B were acquired on two different scanners.
+\paragraph{Acquisition and demographics.} View position and sex and age groups need metadata that only the credentialed sites carry, so they are left for future work. Within the open sites, NITRD Datasets A (152 images, 8-bit JPEG) and B (92 images, 14-bit DICOM) were acquired on two different scanners.
 
 %=====================================================================
 \section{Method}\label{sec:method}
@@ -144,7 +143,7 @@ MAIRA-2~\cite{maira2} & 7B & native, grounded report & 8-bit & research only (pe
 
 \subsection{Claim extraction}\label{sec:claims}
 
-For image $x$, model $m$ generates a findings section $r$. A CheXbert labeller~\cite{chexbert} run locally extracts the set of positive findings. Each finding $f$ is mapped to a shared label space $\mathcal{F}$ (atelectasis, cardiomegaly, consolidation, oedema, effusion, pneumonia, pneumothorax, opacity, nodule/mass), using hand-built mappings to each dataset's label set (Appendix~\ref{app:mapping}). If the model localises a finding, we attach its box $\hat b$. Grounding tags in CheXagent-2 output are removed before labelling. This gives the claim set
+For image $x$, model $m$ generates a findings section $r$. A CheXbert labeller~\cite{chexbert} run locally extracts the set of positive findings. Each finding $f$ is mapped to a shared label space $\mathcal{F}$ (atelectasis, cardiomegaly, consolidation, effusion, pneumothorax, nodule/mass, fracture, pleural thickening, opacity), using hand-built mappings to each dataset's label set (Appendix~\ref{app:mapping}). If the model localises a finding, we attach its box $\hat b$. Grounding tags in CheXagent-2 output are removed before labelling. This gives the claim set
 \begin{equation}
 C_m(x) = \{(f_j, \hat b_j)\}_{j=1}^{|C_m(x)|}, \qquad f_j \in \mathcal{F},\; \hat b_j \in \mathcal{B}\cup\{\varnothing\}.
 \end{equation}
@@ -211,12 +210,10 @@ All sites use every image except Mendeley (400 of 799, drawn with a fixed seed) 
 \section{Results}\label{sec:results}
 %=====================================================================
 
-\noindent\tbd[Partial results: CheXagent-2 is complete on the evidence sites, Montgomery and Mendeley. Qwen2.5-VL and Lingshu figures below come from earlier 4-bit runs and are being regenerated with the FP8 setup of Section~\ref{sec:setup}; their text will be updated. The Qwen-family ablations, NITRD, IU-Xray, the calibration split and the corruption grid are running.]
-
 \subsection{Evidence support across sites (H1)}
 
 \begin{table}[t]
-\caption{Evidence support on clean images: Evidence-Support Precision at the text level (ESP, with 95\% bootstrap interval) and with the model's own box overlapping an expert box (ESP@0.3), evidence recall (ER), and oracle grounding mIoU. Values in \%. \tbd[Filled automatically from the experiment logs; partial until all runs finish.]}\label{tab:esp}
+\caption{Evidence support on clean images: Evidence-Support Precision at the text level (ESP, with 95\% bootstrap interval) and with the model's own box overlapping an expert box (ESP@0.3), evidence recall (ER), and oracle grounding mIoU. Values in \%.}\label{tab:esp}
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -231,24 +228,24 @@ Model & ESP & ESP@0.3 & ER & mIoU & ESP & ESP@0.3 & ER & mIoU \\
 \end{tabular}
 \end{table}
 
-Moving from ChestX-Det to Shenzhen, CheXagent-2's evidence-support precision falls from 64.9\% [62--68] to 55.5\% [50--60] and its evidence recall from 37.6\% to 16.3\%, while the box criterion changes much less (ESP@0.3 37.8\% vs.\ 34.8\%, mIoU 0.26 vs.\ 0.24): at the TB site the model claims fewer of the marked lesions and more findings without evidence, but the claims it does support are localised about as well. On ChestX-Det the two general-domain models reach a similar text-level precision (Qwen2.5-VL 59.8\% [54--66], Lingshu 63.6\% [59--68]) with lower evidence recall (8.9\% and 17.8\%). The shift to the TB site hurts them far more than CheXagent-2: Qwen2.5-VL falls to 24.3\% [17--32] with an evidence recall of 3.3\%, and Lingshu to 50.0\% [37--63] \tbd[(partial)]. The site ranking under ESP therefore changes with the model, and the general-domain model that is best on ChestX-Det is the worst at the TB site. Text-level and box-level support differ by 17--41 points for every model, so a claim that names the right finding is often not placed on it.
+Moving from ChestX-Det to Shenzhen lowers evidence recall for every model: from 37.6\% to 16.3\% for CheXagent-2, from 6.4\% to 1.8\% for Qwen2.5-VL and from 14.0\% to 7.1\% for Lingshu. Precision changes much less. CheXagent-2's ESP falls from 64.9\% [62--68] to 55.5\% [50--60], Lingshu's from 66.1\% [61--71] to 60.2\% [52--67], and Qwen2.5-VL's rises from 57.7\% [50--65] to 66.7\% [52--82] on only 30 verifiable claims. At the new site the models claim fewer findings (1.60, 0.41 and 0.64 claims per image on ChestX-Det; 0.51, 0.17 and 0.20 on Shenzhen) rather than more unsupported ones, so the shift shows up as missed evidence, which a precision-only hallucination metric would not register. Localisation follows the same split: CheXagent-2, trained to ground, keeps its oracle mIoU (0.26 and 0.24), while the two general models halve theirs (0.22 to 0.09 and 0.16 to 0.09). Text-level and box-level support differ by 21--41 points for every model and site, and by about 40 points for Lingshu, whose box format is only prompted, so a claim that names the right finding is often not placed on it.
 
-\tbd[Compare the site ranking under ESP with the ranking under reference-based metrics (CheXbert F1 on IU-Xray; RadGraph F1 and GREEN once MIMIC-CXR and PadChest-GR are added).]
+The only reference-based score available on the open data, CheXbert micro-F1 against IU-Xray reports, orders the models differently: CheXagent-2 0.39, Lingshu 0.12, Qwen2.5-VL 0.10. The four-fold gap reflects mainly how many findings each model reports (0.61 claims per IU-Xray image for CheXagent-2 against 0.09 and 0.25) and, for CheXagent-2, that IU-Xray is in its training data. ESP shows that the claims the general models do make are about as often supported as CheXagent-2's. A reference-based score therefore mixes recall, precision and training overlap, while ESP and evidence recall separate them (H1). A direct test of H1 across sites requires a site with both reference reports and expert boxes (MS-CXR or PadChest-GR), which we could not access.
 
 \subsection{Image corruption and artefact awareness (H2)}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{generated/fig_corruption.pdf}
-\caption{ChestX-Det under five corruptions at a mild and a severe level: unsupported-claim rate (top) and share of reports that mention image quality (bottom). \tbd[Partial until all runs finish.]}\label{fig:corruption}
+\caption{ChestX-Det under five corruptions at a mild and a severe level: unsupported-claim rate (top) and the model's probability that the image quality is adequate for diagnosis (bottom).}\label{fig:corruption}
 \end{figure}
 
-\tbd[Describe Fig.~\ref{fig:corruption}.]
+Image corruption does not reliably raise the unsupported-claim rate on ChestX-Det (Fig.~\ref{fig:corruption}, top). CheXagent-2 stays between 30\% and 39\% against 35.1\% on clean images; the Qwen-family rates move between 19\% and 63\% without a consistent direction, but each of these points rests on 9--79 claims from 100 images and is noisy. On Shenzhen, CheXagent-2's rate rises under all ten corruptions, from 44.5\% to 48--60\%, most under severe noise (60.0\%) and severe JPEG compression (58.1\%). The clearer effect is on what the models say about the image. When asked directly, the Qwen-family models recognise severe degradation: their probability that the image quality is adequate falls from 0.72--0.74 on clean images to 0.001--0.02 under severe blur, 0.08--0.23 under severe noise and 0.20--0.26 under severe JPEG compression (Fig.~\ref{fig:corruption}, bottom). CheXagent-2 barely notices (0.69 clean, 0.57--0.62 under the same corruptions). Yet no model mentions degraded quality in more than 4\% of its reports under any corruption, and usually in none. Lingshu also writes fewer findings under severe noise and blur (0.09 and 0.37 claims per image against 0.64), without saying why. A reader of the report cannot tell that the model judged the image inadequate (H2).
 
 \subsection{Abstention under shift (H3)}
 
 \begin{table}[t]
-\caption{Separating supported from unsupported claims: AUROC / AURC of each confidence signal on clean images (higher AUROC and lower AURC are better). \tbd[Partial until all runs finish.]}\label{tab:calib}
+\caption{Separating supported from unsupported claims: AUROC / AURC of each confidence signal on clean images (higher AUROC and lower AURC are better).}\label{tab:calib}
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -261,40 +258,40 @@ Model & Site & Sent.\ prob. & Agreement & Yes/no & Box agr. & Self-ground. \\
 \end{tabular}
 \end{table}
 
-The sentence probability, the signal most often used to flag hallucinated sentences, separates supported from unsupported claims worst in all six model--site settings (AUROC 0.10--0.47). It is below chance throughout and far below for Qwen2.5-VL (0.25 on ChestX-Det, 0.10 on Shenzhen): the sentences that model writes most confidently are more often unsupported. The yes/no probe is the best single signal in five of six settings (0.66--0.88) and stays strong under the site shift. Box agreement is useful only for the model trained to ground (CheXagent-2, 0.62--0.70; 0.35--0.57 for the others). The self-grounding score, which averages the probe with sample and box agreement, is the best signal for CheXagent-2 on ChestX-Det (0.71, ECE 0.05) but inherits the weakness of box agreement for the general-domain models (0.49 for Lingshu on Shenzhen against 0.77 for the probe). The probe alone is therefore the safer default; box agreement should enter the score only for models with a grounding objective. \tbd[Same comparison on corrupted images.]
+The sentence probability, the signal most often used to flag hallucinated sentences, separates supported from unsupported claims worst in all six model--site settings (AUROC 0.25--0.47). It is below chance throughout and far below for Qwen2.5-VL (0.25 on ChestX-Det, 0.29 on Shenzhen): the sentences a model writes most confidently are more often unsupported. The yes/no probe is the best single signal in four of six settings (0.77--0.93), ties with sample agreement for CheXagent-2 on ChestX-Det (0.69), and is within 0.05 of the best in the remaining one. Its advantage holds under the site shift and under corruption: the probe ranks claims better than the sentence probability in all 47 corrupted model--site--corruption settings that contain both supported and unsupported claims. Box agreement beats the sentence probability in every clean setting, but it is informative only for the model trained to ground (CheXagent-2, 0.62--0.70; 0.50--0.59, close to chance, for the others). H3 therefore holds against the sentence probability but not against the probe. The self-grounding score, which averages the probe with sample and box agreement, is the best or joint-best signal in two settings (CheXagent-2 on ChestX-Det, 0.71; Lingshu on ChestX-Det, 0.76) and within 0.03 of the probe in three more. Including box agreement costs little even for the general models, because it is one of three averaged terms.
 
 \subsection{Conformal transfer (H4) and the site-adaptive filter}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{generated/fig_local.pdf}
-\caption{Claim filter on Shenzhen at target coverage $0.9$ ($\alpha=0.1$): realised coverage (left) and share of claims kept (right) when the threshold is calibrated on ChestX-Det ($m=0$) or on $m$ labelled Shenzhen images. \tbd[Partial until all runs finish.]}\label{fig:local}
+\caption{Claim filter on Shenzhen at target coverage $0.9$ ($\alpha=0.1$): realised coverage (left) and share of claims kept (right) when the threshold is calibrated on ChestX-Det ($m=0$) or on $m$ labelled Shenzhen images.}\label{fig:local}
 \end{figure}
 
-\tbd[Describe Fig.~\ref{fig:local}.]
+On the calibration site's own test images the conformal filters reach their target: at $\alpha=0.1$ the realised coverage on ChestX-Det is 0.89--0.96 for every model and score. At Shenzhen they do not under-cover, as H4 predicted, but over-cover: 0.96--1.00 at $\alpha=0.1$, and the self-grounding filter is above target at $\alpha=0.05$ and $0.2$ as well. The guarantee holds but at a cost. CheXagent-2's self-grounding filter keeps only 18.5\% of its claims at Shenzhen and its yes/no filter 20.1\%, and Lingshu's self-grounding filter keeps 64.1\%. Part of the over-coverage is mechanical: Shenzhen reports contain fewer claims (0.51 against 1.60 per image for CheXagent-2), and a report without a claim is covered trivially. Recalibrating the threshold on $m$ labelled Shenzhen images fixes the cost without losing the guarantee (Fig.~\ref{fig:local}). With $m=50$, coverage stays at or above 0.90 for every model with both the agreement and the self-grounding score, and CheXagent-2's self-grounding filter keeps 70.7\% of its claims instead of 18.5\%, and Lingshu's 97.0\% instead of 64.1\%. Qwen2.5-VL makes so few unsupported claims at Shenzhen that its filter already keeps nearly all of them. Transferred filters are therefore safe but wasteful, and a few dozen local labels recover most of the discarded claims (H4, with the direction of the transfer error reversed).
 
 \subsection{Evidence dependence (H5)}
 
 \begin{table}[t]
-\caption{Evidence ablation. Claims made on the clean image that are lost when the expert-marked regions are removed (Evidence) or when equal areas elsewhere in the lungs are removed (Control); their difference (EDI); and the evidence-dependence index of the yes/no probability with its 95\% bootstrap interval. \tbd[Filled when the ablation runs finish.]}\label{tab:ablation}
+\caption{Evidence ablation. Claims made on the clean image that are lost when the expert-marked regions are removed (Evidence) or when equal areas elsewhere in the lungs are removed (Control); their difference (EDI); and the evidence-dependence index of the yes/no probability with its 95\% bootstrap interval.}\label{tab:ablation}
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}llrcccl@{}}
 \toprule
-Model & Site & Claims & Lost (evidence) & Lost (control) & EDI & EDI of $p$ \\
+Model & Site & Claims & Lost (evid.) & Lost (ctrl.) & EDI & EDI of $p$ \\
 \midrule
 \csname @@input\endcsname generated/tab_ablation.tex 
 \botrule
 \end{tabular}
 \end{table}
 
-Removing the expert-marked regions removes most of the claims that rest on them: CheXagent-2 drops 75.6\% of its evidenced claims on ChestX-Det and 73.7\% on Shenzhen, against 22.5\% and 15.8\% when regions of the same sizes are edited elsewhere in the lungs. The evidence-dependence index is 0.53 and 0.58 on claims and 0.187 [0.170, 0.207] and 0.212 [0.194, 0.230] on the yes/no probability, so the model's claims depend on the marked evidence. Two findings qualify this. About a quarter of the evidenced claims (24.4\% and 26.3\%) survive the removal of all their evidence, so they are made without it, and between 16\% and 23\% of claims disappear after an edit that touches no evidence, so a sizeable share of claims is unstable under any local change to the image. Text-level correctness counts both groups as correct.
+Removing the expert-marked regions removes most of CheXagent-2's claims that rest on them: 75.6\% of its evidenced claims on ChestX-Det and 73.7\% on Shenzhen, against 22.5\% and 15.8\% when regions of the same sizes are edited elsewhere in the lungs (Table~\ref{tab:ablation}). Its evidence-dependence index is 53 and 58 points on claims and 0.187 [0.170, 0.207] and 0.212 [0.194, 0.230] on the yes/no probability. Qwen2.5-VL behaves differently. It loses its evidenced claims about as often under the control edit as under evidence removal (68\% vs.\ 72\% on ChestX-Det, 67\% vs.\ 50\% on Shenzhen; EDI 4 and $-17$ points, on 25 and 6 claims), and its yes/no probability barely depends on the evidence (EDI 0.050 [0.035, 0.066] and 0.009 [$-0.005$, 0.023]). Lingshu's probability depends on the evidence as much as CheXagent-2's (0.193 and 0.181), but its generated claims are unstable under any edit: it drops 95\% and 100\% of them when the evidence is removed and 56\% and 91\% under the control. Two further findings hold across models. About a quarter of CheXagent-2's evidenced claims (24.4\% and 26.3\%) survive the removal of all their evidence, so they are made without it. And 16--91\% of claims disappear after an edit that touches no evidence. Text-level correctness counts both groups as correct (H5).
 
 \subsection{Label-level probes, including Indian hospital data}
 
 \begin{table}[t]
-\caption{Label-level probes from the yes/no questions: AUROC and accuracy of P(TB) or P(abnormal) $=1-$P(normal), calibration error of the answer confidence, and accuracy of the claims in the generated report (abnormal if any finding is claimed). \tbd[Partial until all runs finish.]}\label{tab:probes}
+\caption{Label-level probes from the yes/no questions: AUROC and accuracy of P(TB) or P(abnormal) $=1-$P(normal), calibration error of the answer confidence, and accuracy of the claims in the generated report (abnormal if any finding is claimed).}\label{tab:probes}
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -307,27 +304,27 @@ Model & Site & Label & AUROC & Acc. & ECE & Report acc. \\
 \end{tabular}
 \end{table}
 
-CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 and 0.99), but both sites are in its instruction data (Section~\ref{sec:models}), so these figures measure recall of training data rather than transfer. On the unseen Indian Mendeley site its probability of an abnormal film is barely informative (AUROC 0.58, accuracy 51.7\%) and poorly calibrated (ECE 0.36). For Qwen2.5-VL, whose training data are not published, TB detection is moderate on both public TB sites (AUROC 0.71 on Montgomery, 0.66 on Shenzhen) and poorly calibrated (ECE 0.41 and 0.50); Lingshu reaches 0.82 on Shenzhen \tbd[(partial)]. \tbd[NITRD (unseen, TB) separates the effect of the unseen hospital from the change of task; Qwen-family results.]
+CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 and 0.99), but both sites are in its instruction data (Section~\ref{sec:models}), so these figures may partly measure recall of training data. On the unseen Indian NITRD site it still reaches 0.95 (accuracy 86.1\%), with a higher calibration error (ECE 0.11 against 0.03--0.04). So most of its TB detection transfers to an unseen hospital, with a small loss. On the unseen Mendeley site, where the task is abnormal versus normal and most abnormal films are COVID-19 cases, its probability is barely informative (AUROC 0.58, accuracy 51.7\%, ECE 0.36). Together the two Indian sites show that the large drop comes from the change of task, not from the change of hospital. Lingshu, whose training data are not published, detects TB well at all three TB sites (0.94, 0.86 and 0.95) and is well calibrated (ECE 0.03--0.09). Qwen2.5-VL is moderate everywhere (0.66--0.71) and poorly calibrated on TB (ECE 0.38--0.50). Its 89.2\% accuracy on Mendeley equals the share of abnormal films in the sample (89.3\%): it calls almost every film abnormal. On NITRD, the 14-bit DICOM scanner (Dataset B, 92 images) gives a higher TB AUROC than the 8-bit JPEG scanner (Dataset A, 152 images) for all three models (CheXagent-2 0.98 vs.\ 0.92, Qwen2.5-VL 0.77 vs.\ 0.66, Lingshu 0.99 vs.\ 0.93). The subsets are small and differ in TB prevalence (27\% vs.\ 49\%), so this is an observation, not a scanner effect we can isolate.
 
 %=====================================================================
 \section{Discussion}\label{sec:discussion}
 %=====================================================================
 
-\tbd[Draft from the CheXagent-2 and Qwen2.5-VL results; to be revised when all models and sites are in.]
+\paragraph{Correct is not the same as grounded.} Three measurements separate a claim that names the right finding from a claim that rests on the evidence for it. Between 21 and 41 points separate text-level from box-level support, so models often name a finding they do not place on the marked region. A quarter of CheXagent-2's evidenced claims survive the removal of all their evidence, and Qwen2.5-VL's claims are lost as often after an unrelated edit as after evidence removal, so they are made without it. And 16--91\% of claims vanish after an edit that touches no evidence, so many claims are fragile rather than wrong. Reference-based metrics, and text-level ESP itself, count all three groups as correct. The evidence ablation with a matched control is cheap (two extra reports per image, no localisation) and could be added to any grounded benchmark.
 
-\paragraph{Correct is not the same as grounded.} Three measurements separate a claim that names the right finding from a claim that rests on the evidence for it. About 25 points separate text-level from box-level support, so the model often names a finding it does not place on the marked region. A quarter of evidenced claims survive the removal of all their evidence, so they are made without it. And between 16\% and 23\% of claims vanish after an edit that touches no evidence, so many claims are fragile rather than wrong. Reference-based metrics, and text-level ESP itself, count all three groups as correct. The evidence ablation with a matched control is cheap (two extra reports per image, no localisation) and could be added to any grounded benchmark.
+\paragraph{Which confidence to trust.} The token probability of the generated sentence, the most common hallucination signal, is below chance at separating supported from unsupported claims for every model, and strongly inverted for Qwen2.5-VL. Asking the model a direct yes/no question about the claimed finding is the best or near-best signal in every setting, on clean and corrupted images, and costs one forward pass per finding. Box agreement helps only for a model trained to ground. A deployment that cannot tune the signal per model should use the yes/no probe, never the sentence probability.
 
-\paragraph{Which confidence to trust.} The token probability of the generated sentence, the most common hallucination signal, is below chance at separating supported from unsupported claims for every model, and strongly inverted for Qwen2.5-VL. Asking the model a direct yes/no question about the claimed finding is the most reliable signal in almost every setting and costs one forward pass per finding. Box agreement helps only for a model trained to ground; adding it to the score for other models makes the score worse. A deployment that cannot tune the signal per model should use the yes/no probe, never the sentence probability.
+\paragraph{Seen and unseen hospitals.} The public TB sites are in CheXagent-2's instruction data. Its TB detection drops only from 0.99--1.00 to 0.95 at the unseen Indian TB site, but to 0.58 at the unseen Indian site that asks a different question (abnormal versus normal). Without the second Indian TB site, the drop on Mendeley would have been read as a failure to transfer to Indian hospitals. A reliability study therefore has to check each model's training sources, keep at least one unseen site, and hold the task fixed across sites so that a change of hospital is not confounded with a change of question.
 
-\paragraph{Seen and unseen hospitals.} The public TB sites are in CheXagent-2's instruction data, and its near-perfect TB detection there disappears on the unseen Indian site. Public CXR collections are reused so widely in instruction tuning that ``external validation'' on them can measure memorisation; a reliability study has to check each model's training sources and keep at least one site that no model has seen. Here, only the Indian data meet that requirement. \tbd[NITRD, Lingshu and the conformal results will complete this paragraph.]
+\paragraph{Shift as silence.} Under both site shift and image corruption, the models tend to say less rather than hallucinate more: fewer claims, lower evidence recall, and, for the Qwen-family models, a confident judgement that the image is inadequate that never reaches the report. Precision-style hallucination metrics, ESP included, miss this, which is why we report evidence recall and the quality probe alongside them. The same effect makes transferred conformal filters conservative: they keep their guarantee but discard most claims until recalibrated on a few dozen local images.
 
-\paragraph{Limitations.} ESP assumes the expert annotation is exhaustive within the shared label space; findings missed by annotators count against the model. The open grounding data come mostly from one source (NIH); the PhysioNet and PadChest-GR sites are needed for a multi-country evidence comparison. Indian data have labels only, so faithfulness and grounding cannot yet be measured on Indian patients. Claim extraction by an automatic labeller introduces errors, which we quantify by manual review. The 7B models run with FP8 weights, which may change their behaviour slightly. Most models were trained on MIMIC-CXR, and MAIRA-2 and RadVLM also on MS-CXR, so their in-distribution results are reported separately.
+\paragraph{Limitations.} ESP assumes the expert annotation is exhaustive within the shared label space; findings missed by annotators count against the model. The open grounding data come mostly from one source (NIH); the PhysioNet and PadChest-GR sites are needed for a multi-country evidence comparison. Indian data have labels only, so faithfulness and grounding cannot yet be measured on Indian patients. Claim extraction by an automatic labeller introduces errors, which we quantify by manual review. The 7B models run with FP8 weights, which changes their outputs relative to 4-bit or bf16 inference. Some cells rest on few claims: the general models make 30 verifiable claims or fewer at Shenzhen in some conditions, and the corruption grid uses 100 images per setting, so those rates carry wide intervals. MedGemma~1.5 and MAIRA-2 could not be evaluated because access was not granted in time.
 
 %=====================================================================
 \section{Conclusion}\label{sec:conclusion}
 %=====================================================================
 
-\tbd[To be written after the results.]
+We proposed evaluating chest X-ray VLMs against independent expert evidence rather than against reference reports, and applied it to three open models on six public sites from three countries and under ten image corruptions. Under site shift and corruption the models mainly fail by omission: evidence recall drops by half or more while claim precision changes little, and the models detect severe image degradation when asked but never report it. Text-level correctness overstates grounding: 21--41 points separate naming a finding from placing it, and the evidence ablation shows that one model's claims do not depend on the evidence at all. For abstention, the sentence probability is worse than chance, while a direct yes/no probe works across models, sites and corruptions. Conformal claim filters keep their guarantee across sites but become wasteful, and 50 local labels recover most of the discarded claims. The evidence ablation and the recall-aware metrics are cheap to add to any grounded benchmark. The next step is to apply them to credentialed sites with both reference reports and expert boxes, and to models with a native grounding objective.
 
 \backmatter
 
@@ -342,14 +339,20 @@ CheXagent-2 detects TB almost perfectly on Montgomery and Shenzhen (AUROC 1.00 a
 \item \textbf{Ethics approval and consent to participate:} This study uses only publicly available, de-identified datasets under their data use agreements. No new data were collected from patients.
 \item \textbf{Consent for publication:} Not applicable.
 \item \textbf{Data availability:} All datasets are available from their original providers under the access terms given in Table~\ref{tab:datasets}.
-\item \textbf{Code availability:} \tbd[Repository URL.]
+\item \textbf{Code availability:} Code, prompts, label mappings, raw model outputs and run logs will be released in a public repository upon publication.
 \item \textbf{Author contribution:} \tbd[To be stated.]
 \end{itemize}
 
 \begin{appendices}
 
 \section{Label mappings}\label{app:mapping}
-\tbd[Mapping of each dataset's finding labels and each model's vocabulary to the shared label space $\mathcal{F}$.]
+Model reports are labelled by CheXbert into 14 classes, which map to $\mathcal{F}$ as follows: Atelectasis $\to$ atelectasis; Cardiomegaly $\to$ cardiomegaly; Consolidation and Pneumonia $\to$ consolidation; Pleural Effusion $\to$ effusion; Pneumothorax $\to$ pneumothorax; Lung Lesion $\to$ nodule/mass; Fracture $\to$ fracture; Pleural Other $\to$ pleural thickening; Lung Opacity $\to$ opacity. Edema and Enlarged Cardiomediastinum claims are recorded but excluded from ESP, since no evidence site has boxes for them; Support Devices and No Finding are not claims.
+
+\textbf{ChestX-Det.} Atelectasis, Cardiomegaly, Consolidation, Effusion, Pneumothorax, Fracture and Pleural Thickening map to their counterparts; Nodule, Mass and Diffuse Nodule to nodule/mass. A generic opacity claim is supported by any box of Atelectasis, Consolidation, Nodule, Mass, Diffuse Nodule, Fibrosis or Calcification. Emphysema supports no claim.
+
+\textbf{Shenzhen.} Lesion types map as infiltrate, consolidation and pneumonia $\to$ consolidation; nodule, mass and cavity $\to$ nodule/mass; pleural effusion $\to$ effusion; pleural and interlobar thickening $\to$ pleural thickening; atelectasis and collapse $\to$ atelectasis; pneumothorax $\to$ pneumothorax. All parenchymal lesions also support opacity; calcifications, calcified lymph nodes, linear densities and miliary patterns support opacity only; adenopathy, retraction and unspecified lesions are ignored.
+
+\textbf{Probe questions.} Each finding in $\mathcal{F}$ is asked about by name (``pleural effusion'', ``lung nodule or mass'', ``rib fracture'', ``lung opacity''; the others by their label), plus normality, tuberculosis and image quality.
 
 \section{Prompts}\label{app:prompts}
 \textbf{Report.} Qwen2.5-VL and Lingshu: ``You are an expert radiologist. Write the findings section of a radiology report for this chest X-ray. Describe only what is visible in the image.'' CheXagent-2: ``Given the indication: "Routine chest radiograph.", write a structured findings section for the CXR.''

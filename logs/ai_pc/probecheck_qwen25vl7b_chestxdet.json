@@ -1,0 +1,11 @@
+{
+ "model": "qwen25vl7b",
+ "site": "chestxdet",
+ "images": 30,
+ "questions": 360,
+ "mean_abs": 0.004960341759259394,
+ "median_abs": 1.620927373024994e-05,
+ "p95_abs": 0.029762693807248386,
+ "max_abs": 0.031209601984884594,
+ "share_over_0_05": 0.0
+}

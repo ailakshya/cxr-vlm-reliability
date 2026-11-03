@@ -97,7 +97,7 @@ def fig_corruption():
     fig, ax = plt.subplots(2, len(FAMILIES), figsize=(7.2, 3.6), sharey="row")
     for j, fam in enumerate(FAMILIES):
         for m, n in present(MODELS):
-            for i, (key, lab) in enumerate((("UCR_text", "Unsupported-claim rate"), ("quality_mention", "Quality mentioned"))):
+            for i, (key, lab) in enumerate((("UCR_text", "Unsupported-claim rate"), ("p_quality_ok", "P(quality adequate)"))):
                 xs, ys = [], []
                 for sev, cond in ((0, "clean"), (1, f"{fam}_1"), (3, f"{fam}_3")):
                     v = g(m, "chestxdet", cond, key)
@@ -106,7 +106,8 @@ def fig_corruption():
                 if xs:
                     ax[i, j].plot(xs, ys, marker="o", ms=3, label=n)
                 ax[i, 0].set_ylabel(lab, fontsize=7)
-        ax[0, j].set_title(fam, fontsize=8); ax[1, j].set_xticks([0, 1, 3], ["clean", "mild", "severe"], fontsize=6)
+        ax[0, j].set_title(fam, fontsize=8)
+        for a in ax[:, j]: a.set_xticks([0, 1, 3], ["clean", "mild", "severe"], fontsize=6)
         ax[0, j].tick_params(labelsize=6); ax[1, j].tick_params(labelsize=6)
     ax[0, 0].legend(fontsize=6)
     fig.tight_layout(); os.makedirs(OUT, exist_ok=True); fig.savefig(f"{OUT}/fig_corruption.pdf"); print("wrote fig_corruption.pdf")
